@@ -1,10 +1,15 @@
 package org.example.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +21,8 @@ public class Customer {
     private String phone;
     private String password;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Orders> orders = new ArrayList<>();
-
-    public Customer(){
-
-    }
 
     public Customer(Integer id, String name, String email, String address, String phone, String password) {
         this.id = id;
@@ -42,29 +43,5 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
                 '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

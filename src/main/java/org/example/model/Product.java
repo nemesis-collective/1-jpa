@@ -1,8 +1,14 @@
 package org.example.model;
 
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,10 +17,6 @@ public class Product {
     private String description;
     private double price;
     private String currency;
-
-    public Product(){
-
-    }
 
     public Product(Integer id, String name, String description, double price, String currency) {
         this.id = id;
@@ -34,25 +36,5 @@ public class Product {
                 ", price=" + price +
                 ", currency='" + currency + '\'' +
                 '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getCurrency() {
-        return currency;
     }
 }
