@@ -1,5 +1,5 @@
 <configuration>
-    <root level="INFO">
+    <root level="ERROR">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
