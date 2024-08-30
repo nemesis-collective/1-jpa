@@ -29,7 +29,6 @@ public class OrderDao implements Dao<Order> {
     try {
       em.persist(order.getCustomer());
       em.persist(order);
-
       for (LineItem item : order.getLineItems()) {
         em.persist(item.getProduct());
         em.persist(item);
@@ -43,15 +42,19 @@ public class OrderDao implements Dao<Order> {
 
   @Override
   public Order get(Long id) {
-    return em.find(Order.class, id);
+    Order order = null;
+    try{
+      order = em.find(Order.class, id);
+    }catch (IllegalArgumentException e){
+      log.error("Unable to find the order.{}", e.getMessage());
+    }
+    return order;
   }
 
   @Override
   public List<Order> getAll() {
     List<Order> list = List.of();
     try {
-      CriteriaBuilder cb = em.getCriteriaBuilder();
-
       CriteriaQuery<Order> cq = cb.createQuery(Order.class);
 
       Root<Order> root = cq.from(Order.class);
@@ -68,20 +71,33 @@ public class OrderDao implements Dao<Order> {
 
   @Override
   public Order update(Order order) {
-    return null;
+    try{
+      CriteriaUpdate<Order> criteriaUpdate = cb.createCriteriaUpdate(Order.class);
+      Root<Order> root = criteriaUpdate.from(Order.class);
+
+      criteriaUpdate.set(root.get("customer"), order.getCustomer());
+
+      criteriaUpdate.where(cb.equal(root.get("id"), order.getId()));
+
+      em.createQuery(criteriaUpdate).executeUpdate();
+      em.getTransaction().commit();
+    } catch (Exception e) {
+      log.error("Unable to update order. {}", e.getMessage());
+    }
+    return order;
   }
 
   public Order getByLineItem(Integer order_id) {
     Order order = null;
     try {
-      CriteriaQuery cq = cb.createQuery(Order.class);
+      CriteriaQuery<Order> cq = cb.createQuery(Order.class);
       Root<LineItem> lineItemRoot = cq.from(LineItem.class);
       Join<LineItem, Order> orderJoin = lineItemRoot.join("order");
 
       cq.select(orderJoin).where(cb.equal(orderJoin.get("id"), order_id));
-      order = (Order) em.createQuery(cq).getSingleResult();
+      order = em.createQuery(cq).getSingleResult();
     } catch (Exception e) {
-      log.error("Unable to find the order. {}", e.getMessage());
+      log.error("Unable to find order. {}", e.getMessage());
     } finally {
       em.getTransaction().commit();
     }
@@ -114,7 +130,7 @@ public class OrderDao implements Dao<Order> {
       Order order = em.find(Order.class, orderId);
       em.remove(order);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
-      System.out.printf("Unable to delete order. " + e.getMessage());
+      log.error("Unable to delete order. {}", e.getMessage());
     } finally {
       em.getTransaction().commit();
     }
