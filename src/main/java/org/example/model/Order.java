@@ -19,6 +19,9 @@ public class Order {
   @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
+  private String status;
+  private String paymentMethod;
+
   @OneToMany(
       mappedBy = "order",
       cascade = CascadeType.ALL,
@@ -26,10 +29,12 @@ public class Order {
       fetch = FetchType.LAZY)
   private List<LineItem> lineItems;
 
-  public Order(Long id, Customer customer) {
+  public Order(Long id, Customer customer,String status,String paymentMethod) {
     this.customer = customer;
     this.id = id;
     this.lineItems = new ArrayList<>();
+    this.status = status;
+    this.paymentMethod = paymentMethod;
   }
 
   public void addLineItem(LineItem item) {
