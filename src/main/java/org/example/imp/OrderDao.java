@@ -3,10 +3,8 @@ package org.example.imp;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
-
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
-import org.example.model.Customer;
 import org.example.model.LineItem;
 import org.example.model.Order;
 
@@ -43,10 +41,10 @@ public class OrderDao implements Dao<Order> {
   @Override
   public Order get(Long id) {
     Order order = null;
-    try{
+    try {
       order = em.find(Order.class, id);
-    }catch (IllegalArgumentException e){
-      log.error("Unable to find the order.{}", e.getMessage());
+    } catch (IllegalArgumentException e) {
+      log.error("Unable to get order.{}", e.getMessage());
     }
     return order;
   }
@@ -63,28 +61,35 @@ public class OrderDao implements Dao<Order> {
 
       list = em.createQuery(cq).getResultList();
     } catch (Exception e) {
-      log.error("Unable to get orders.{} ", e.getMessage());
+      log.error("Unable to get orders. {} ", e.getMessage());
     }
 
     return list;
   }
 
   @Override
-  public Order update(Order order) {
-    try{
-      CriteriaUpdate<Order> criteriaUpdate = cb.createCriteriaUpdate(Order.class);
-      Root<Order> root = criteriaUpdate.from(Order.class);
+  public void update(Order order) {
+    try {
+      Order order1 = em.find(Order.class, order.getId());
+      if (order1 == null) {
+        throw new IllegalArgumentException("There is no order with this ID.");
+      }
+      CriteriaBuilder cb = em.getCriteriaBuilder();
+      CriteriaUpdate<Order> update = cb.createCriteriaUpdate(Order.class);
+      Root<Order> root = update.from(Order.class);
 
-      criteriaUpdate.set(root.get("customer"), order.getCustomer());
+      update.set(root.get("paymentMethod"), order.getPaymentMethod());
+      update.set(root.get("status"), order.getStatus());
 
-      criteriaUpdate.where(cb.equal(root.get("id"), order.getId()));
+      update.where(cb.equal(root.get("id"), order.getId()));
 
-      em.createQuery(criteriaUpdate).executeUpdate();
+      em.createQuery(update).executeUpdate();
+
+    } catch (IllegalArgumentException e) {
+      log.error("{}", e.getMessage());
+    } finally {
       em.getTransaction().commit();
-    } catch (Exception e) {
-      log.error("Unable to update order. {}", e.getMessage());
     }
-    return order;
   }
 
   @Override
