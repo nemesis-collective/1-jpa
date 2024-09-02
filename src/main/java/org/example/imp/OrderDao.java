@@ -32,7 +32,7 @@ public class OrderDao implements Dao<Order> {
         em.persist(item);
       }
     } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to add order. {}", e.getMessage());
+      log.error("Unable to add order.");
     } finally {
       em.getTransaction().commit();
     }
@@ -44,7 +44,7 @@ public class OrderDao implements Dao<Order> {
     try {
       order = em.find(Order.class, id);
     } catch (IllegalArgumentException e) {
-      log.error("Unable to get order.{}", e.getMessage());
+      log.error("Unable to get order.");
     }
     return order;
   }
@@ -61,7 +61,7 @@ public class OrderDao implements Dao<Order> {
 
       list = em.createQuery(cq).getResultList();
     } catch (Exception e) {
-      log.error("Unable to get orders. {} ", e.getMessage());
+      log.error("Unable to get all orders.");
     }
 
     return list;
@@ -86,7 +86,7 @@ public class OrderDao implements Dao<Order> {
       em.createQuery(update).executeUpdate();
 
     } catch (IllegalArgumentException e) {
-      log.error("{}", e.getMessage());
+      log.error("Unable to update order.");
     } finally {
       em.getTransaction().commit();
     }
@@ -98,7 +98,7 @@ public class OrderDao implements Dao<Order> {
       Order order = em.find(Order.class, orderId);
       em.remove(order);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to delete order. {}", e.getMessage());
+      log.error("Unable to delete order.");
     } finally {
       em.getTransaction().commit();
     }
