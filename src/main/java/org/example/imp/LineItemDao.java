@@ -3,6 +3,7 @@ package org.example.imp;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
@@ -25,8 +26,10 @@ public class LineItemDao implements Dao<LineItem> {
   public void add(LineItem lineItem) {
     try {
       em.persist(lineItem);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    } catch (IllegalArgumentException | TransactionRequiredException e) {
+      log.error("Unable to add item to order.");
+    }finally{
+      em.getTransaction().commit();
     }
   }
 
