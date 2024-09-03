@@ -69,6 +69,21 @@ public class OrderDAOTest {
   }
 
   @Test
+  @org.junit.jupiter.api.Order(3)
+  void getTest_whenOrderIdIsValid_mustReturnOrder() {
+    assertNotNull(orderDao.get(1L));
+  }
+
+  @Test
+  @org.junit.jupiter.api.Order(4)
+  void getTest_whenOrderIdIsInvalid_mustNotThrowException() throws IOException {
+     orderDao.get(2L);
+    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
+    final String logContent = String.join("\n", logLines);
+    assertTrue(logContent.contains("Unable to get order."));
+  }
+
+  @Test
   @org.junit.jupiter.api.Order(5)
   void getAllTest_mustReturnAllOrders() {
     assertDoesNotThrow(() -> orderDao.getAll());
