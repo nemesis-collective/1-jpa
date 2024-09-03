@@ -5,12 +5,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.sound.sampled.Line;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
-import org.example.model.Customer;
 import org.example.model.LineItem;
+
 
 @Slf4j
 public class LineItemDao implements Dao<LineItem> {
@@ -52,7 +53,20 @@ public class LineItemDao implements Dao<LineItem> {
 
   @Override
   public List<LineItem> getAll() {
-    return List.of();
+    List<LineItem> list = List.of();
+    try {
+      CriteriaQuery<LineItem> cq = cb.createQuery(LineItem.class);
+
+      Root<LineItem> root = cq.from(LineItem.class);
+
+      cq.select(root);
+
+      list = em.createQuery(cq).getResultList();
+    } catch (Exception e) {
+      log.error("Unable to get all items.");
+    }
+
+    return list;
   }
 
   @Override

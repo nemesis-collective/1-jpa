@@ -5,11 +5,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.Customer;
-import org.example.model.Order;
 
 @Slf4j
 public class CustomerDao implements Dao<Customer> {
@@ -51,7 +52,20 @@ public class CustomerDao implements Dao<Customer> {
 
   @Override
   public List<Customer> getAll() {
-    return List.of();
+    List<Customer> list = List.of();
+    try {
+      CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
+
+      Root<Customer> root = cq.from(Customer.class);
+
+      cq.select(root);
+
+      list = em.createQuery(cq).getResultList();
+    } catch (Exception e) {
+      log.error("Unable to get all customers.");
+    }
+
+    return list;
   }
 
   @Override
