@@ -7,6 +7,7 @@ import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
+import org.example.model.Customer;
 import org.example.model.Product;
 
 @Slf4j
@@ -36,7 +37,16 @@ public class ProductDao implements Dao<Product> {
 
   @Override
   public Product get(Long id) {
-    return null;
+    Product product = null;
+    try {
+      product = em.find(Product.class, id);
+      if(product == null){
+        throw new IllegalArgumentException();
+      }
+    } catch (IllegalArgumentException e) {
+      log.error("Unable to get product.");
+    }
+    return product;
   }
 
   @Override
