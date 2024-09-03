@@ -43,6 +43,9 @@ public class OrderDao implements Dao<Order> {
     Order order = null;
     try {
       order = em.find(Order.class, id);
+      if(order == null){
+        throw new IllegalArgumentException();
+      }
     } catch (IllegalArgumentException e) {
       log.error("Unable to get order.");
     }
@@ -72,7 +75,7 @@ public class OrderDao implements Dao<Order> {
     try {
       Order order1 = em.find(Order.class, order.getId());
       if (order1 == null) {
-        throw new IllegalArgumentException("There is no order with this ID.");
+        throw new IllegalArgumentException();
       }
       CriteriaBuilder cb = em.getCriteriaBuilder();
       CriteriaUpdate<Order> update = cb.createCriteriaUpdate(Order.class);
