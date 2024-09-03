@@ -28,7 +28,7 @@ public class ProductDao implements Dao<Product> {
     try {
       em.persist(product);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to add order. {}", e.getMessage());
+      log.error("Unable to add product.");
     } finally {
       em.getTransaction().commit();
     }
