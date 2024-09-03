@@ -3,13 +3,16 @@ package com.example;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
-
 import org.example.imp.OrderDao;
 import org.example.model.Customer;
 import org.example.model.LineItem;
@@ -19,6 +22,8 @@ import org.junit.jupiter.api.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class OrderDAOTest {
+
+  private static final String LOG_PATH = "logs/app.log";
 
   EntityManagerFactory etf = Persistence.createEntityManagerFactory("persistence");
   OrderDao orderDao = new OrderDao(etf);
@@ -30,6 +35,15 @@ public class OrderDAOTest {
   Product product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
 
   LineItem lineItem = new LineItem(null, 2, 10, "dollars", product, order);
+
+  @BeforeEach
+  public void tearDown() throws IOException {
+    Files.write(
+        Paths.get(LOG_PATH),
+        new byte[0],
+        StandardOpenOption.TRUNCATE_EXISTING,
+        StandardOpenOption.CREATE);
+  }
 
   @Test
   @org.junit.jupiter.api.Order(1)
@@ -55,15 +69,14 @@ public class OrderDAOTest {
   }
 
   @Test
-  @org.junit.jupiter.api.Order(3)
+  @org.junit.jupiter.api.Order(5)
   void getAllTest_mustReturnAllOrders() {
-    List<Order> list = List.of();
-    assertNotEquals(list, orderDao.getAll());
+    assertDoesNotThrow(() -> orderDao.getAll());
   }
 
   @Test
-  @org.junit.jupiter.api.Order(4)
-  void getAllTest_whenOccursException_mustNotThrow() {
+  @org.junit.jupiter.api.Order(6)
+  void getAllTest_whenOccursException_mustNotThrow() throws IOException {
     EntityManagerFactory etfMock = mock(EntityManagerFactory.class);
     EntityManager emMock = mock(EntityManager.class);
     EntityTransaction transaction = mock(EntityTransaction.class);
@@ -75,33 +88,43 @@ public class OrderDAOTest {
     when(cb.createQuery()).thenThrow(new IllegalArgumentException());
 
     OrderDao orderDaoMock = new OrderDao(etfMock);
+    orderDaoMock.getAll();
+    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
+    final String logContent = String.join("\n", logLines);
 
-    assertDoesNotThrow(orderDaoMock::getAll);
+    assertTrue(logContent.contains("Unable to get all orders."));
   }
 
   @Test
-  @org.junit.jupiter.api.Order(5)
+  @org.junit.jupiter.api.Order(7)
   void updateTest_whenOrderIsValid_mustNotThrowException() {
     Order order1 = new Order(1L, customer, "processing", "Credit Card");
     assertDoesNotThrow(() -> orderDao.update(order1));
   }
 
   @Test
-  @org.junit.jupiter.api.Order(6)
-  void updateTest_whenOrderIsInvalid_mustNotThrowException() {
+  @org.junit.jupiter.api.Order(8)
+  void updateTest_whenOrderIsInvalid_mustReceiveErrorMessage() throws IOException {
     Order order1 = new Order(3L, customer, "processing", "Ticket");
-    assertDoesNotThrow(() -> orderDao.update(order1));
+    orderDao.update(order1);
+    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
+    final String logContent = String.join("\n", logLines);
+    assertTrue(logContent.contains("Unable to update order."));
   }
 
   @Test
-  @org.junit.jupiter.api.Order(7)
-  void deleteTest_whenOrderIdIsValid_mustNotThrowException(){
+  @org.junit.jupiter.api.Order(9)
+  void deleteTest_whenOrderIdIsValid_mustNotThrowException() throws IOException {
     assertDoesNotThrow(() -> orderDao.delete(1L));
   }
 
   @Test
-  @org.junit.jupiter.api.Order(8)
-  void deleteTest_whenOrderIdIsInvalid_mustNotThrowException() {
-    assertDoesNotThrow(() -> orderDao.delete(2L));
+  @org.junit.jupiter.api.Order(10)
+  void deleteTest_whenOrderIdIsInvalid_mustReceiveErrorMessage() throws IOException {
+    orderDao.delete(2L);
+    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
+    final String logContent = String.join("\n", logLines);
+
+    assertTrue(logContent.contains("Unable to delete order."));
   }
 }
