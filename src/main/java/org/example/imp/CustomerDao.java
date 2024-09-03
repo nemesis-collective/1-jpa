@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.Customer;
+import org.example.model.Order;
 
 @Slf4j
 public class CustomerDao implements Dao<Customer> {
@@ -36,7 +37,16 @@ public class CustomerDao implements Dao<Customer> {
 
   @Override
   public Customer get(Long id) {
-    return null;
+    Customer customer = null;
+    try {
+      customer = em.find(Customer.class, id);
+      if(customer == null){
+        throw new IllegalArgumentException();
+      }
+    } catch (IllegalArgumentException e) {
+      log.error("Unable to get customer.");
+    }
+    return customer;
   }
 
   @Override

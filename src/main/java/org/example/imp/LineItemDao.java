@@ -5,8 +5,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.sound.sampled.Line;
+
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
+import org.example.model.Customer;
 import org.example.model.LineItem;
 
 @Slf4j
@@ -35,7 +38,16 @@ public class LineItemDao implements Dao<LineItem> {
 
   @Override
   public LineItem get(Long id) {
-    return null;
+    LineItem lineItem = null;
+    try {
+      lineItem = em.find(LineItem.class, id);
+      if(lineItem == null){
+        throw new IllegalArgumentException();
+      }
+    } catch (IllegalArgumentException e) {
+      log.error("Unable to get item.");
+    }
+    return lineItem;
   }
 
   @Override
