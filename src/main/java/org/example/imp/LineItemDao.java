@@ -6,11 +6,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.LineItem;
+import org.example.model.Order;
+import org.example.model.Product;
 
 
 @Slf4j
@@ -70,7 +73,29 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   @Override
-  public void update(LineItem lineItem) {}
+  public void update(LineItem lineItem) {
+    try {
+    LineItem lineItem1 = em.find(LineItem.class, lineItem.getId());
+    if (lineItem1 == null) {
+      throw new IllegalArgumentException();
+    }
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaUpdate<LineItem> update = cb.createCriteriaUpdate(LineItem.class);
+    Root<LineItem> root = update.from(LineItem.class);
+
+    update.set(root.get("currency"), lineItem1.getCurrency());
+    update.set(root.get("totalPrice"), lineItem1.getTotalPrice());
+    update.set(root.get("quantity"), lineItem1.getQuantity());
+
+    update.where(cb.equal(root.get("id"), lineItem1.getId()));
+
+    em.createQuery(update).executeUpdate();
+  } catch (Exception e) {
+    log.error("Unable to update item.");
+  } finally {
+    em.getTransaction().commit();
+  }
+  }
 
   @Override
   public void delete(Long id) {}
