@@ -98,5 +98,14 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   @Override
-  public void delete(Long id) {}
+  public void delete(Long id) {
+    try {
+      LineItem lineItem = em.find(LineItem.class, id);
+      em.remove(lineItem);
+    } catch (IllegalArgumentException | TransactionRequiredException e) {
+      log.error("Unable to delete item.");
+    } finally {
+      em.getTransaction().commit();
+    }
+  }
 }

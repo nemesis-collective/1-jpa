@@ -98,5 +98,14 @@ public class CustomerDao implements Dao<Customer> {
   }
 
   @Override
-  public void delete(Long id) {}
+  public void delete(Long id) {
+    try {
+      Customer customer = em.find(Customer.class, id);
+      em.remove(customer);
+    } catch (IllegalArgumentException | TransactionRequiredException e) {
+      log.error("Unable to delete customer.");
+    } finally {
+      em.getTransaction().commit();
+    }
+  }
 }
