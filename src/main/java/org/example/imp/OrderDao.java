@@ -96,9 +96,9 @@ public class OrderDao implements Dao<Order> {
   }
 
   @Override
-  public void delete(Long orderId) {
+  public void delete(Long id) {
     try {
-      Order order = em.find(Order.class, orderId);
+      Order order = em.find(Order.class, id);
       em.remove(order);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to delete order.");

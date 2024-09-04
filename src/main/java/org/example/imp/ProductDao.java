@@ -98,5 +98,14 @@ public class ProductDao implements Dao<Product> {
   }
 
   @Override
-  public void delete(Long id) {}
+  public void delete(Long id) {
+    try {
+      Product product = em.find(Product.class, id);
+      em.remove(product);
+    } catch (IllegalArgumentException | TransactionRequiredException e) {
+      log.error("Unable to delete product.");
+    } finally {
+      em.getTransaction().commit();
+    }
+  }
 }
