@@ -8,7 +8,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/db"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:db;DB_CLOSE_DELAY=-1"/>
             <property name="jakarta.persistence.jdbc.user" value="admin"/>
             <property name="jakarta.persistence.jdbc.password" value="admin"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
