@@ -2,9 +2,7 @@ package com.example;
 
 import org.example.imp.CustomerDao;
 import org.example.model.Customer;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerDaoTest {
     private static final String LOG_PATH = "logs/app.log";
 
@@ -42,13 +41,13 @@ public class CustomerDaoTest {
 
     @Test
     @Order(1)
-    void addOrderTest_whenAddAnOrder_mustNotThrowException() {
+    void addOrderTest_whenAddCustomer_mustNotThrowException() {
         assertDoesNotThrow(() -> customerDao.add(customer));
     }
 
     @Test
     @Order(2)
-    void addOrderTest_whenAddAnOrderFails_mustNotThrowException() {
+    void addOrderTest_whenAddCustomerFails_mustNotThrowException() {
         EntityManagerFactory etfMock = mock(EntityManagerFactory.class);
         EntityManager emMock = mock(EntityManager.class);
         EntityTransaction transaction = mock(EntityTransaction.class);
@@ -64,13 +63,13 @@ public class CustomerDaoTest {
 
     @Test
     @Order(3)
-    void getTest_whenOrderIdIsValid_mustReturnOrder() {
+    void getTest_whenCustomerIdIsValid_mustReturnCustomer() {
         assertNotNull(customerDao.get(1L));
     }
 
     @Test
     @org.junit.jupiter.api.Order(4)
-    void getTest_whenOrderIdIsInvalid_mustNotThrowException() throws IOException {
+    void getTest_whenCustomerIdIsInvalid_mustNotThrowException() throws IOException {
         customerDao.get(2L);
         final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
         final String logContent = String.join("\n", logLines);
@@ -79,7 +78,7 @@ public class CustomerDaoTest {
 
     @Test
     @Order(5)
-    void getAllTest_mustReturnAllOrders() {
+    void getAllTest_mustReturnAllCustomer() {
         assertDoesNotThrow(() -> customerDao.getAll());
     }
 
@@ -106,14 +105,14 @@ public class CustomerDaoTest {
 
     @Test
     @Order(7)
-    void updateTest_whenOrderIsValid_mustNotThrowException() {
-        Customer customer1 = new Customer(1L,"QiyanaTech","teste456@gmail.com","Rua Ixtal","1254785336");
+    void updateTest_whenCustomerIsValid_mustNotThrowException() {
+        Customer customer1 = new Customer(1L,"QiyanaTech1","teste456@gmail.com","Rua Ixtal","1254785336");
         assertDoesNotThrow(() -> customerDao.update(customer1));
     }
 
     @Test
     @Order(8)
-    void updateTest_whenOrderIsInvalid_mustReceiveErrorMessage() throws IOException {
+    void updateTest_whenCustomerIsInvalid_mustReceiveErrorMessage() throws IOException {
         Customer customer1 = new Customer(2L,"QiyanaTech","teste456@gmail.com","Rua Ixtal","1254785336");
         customerDao.update(customer1);
         final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
@@ -123,7 +122,7 @@ public class CustomerDaoTest {
 
     @Test
     @Order(9)
-    void deleteTest_whenOrderIdIsValid_mustNotThrowException(){
+    void deleteTest_whenCustomerIdIsValid_mustNotThrowException(){
         assertDoesNotThrow(() -> customerDao.delete(1L));
     }
 
