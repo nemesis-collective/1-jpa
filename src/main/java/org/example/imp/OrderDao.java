@@ -77,7 +77,6 @@ public class OrderDao implements Dao<Order> {
       if (order1 == null) {
         throw new IllegalArgumentException();
       }
-      CriteriaBuilder cb = em.getCriteriaBuilder();
       CriteriaUpdate<Order> update = cb.createCriteriaUpdate(Order.class);
       Root<Order> root = update.from(Order.class);
 
