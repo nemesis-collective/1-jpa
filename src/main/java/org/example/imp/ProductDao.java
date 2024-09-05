@@ -78,9 +78,8 @@ public class ProductDao implements Dao<Product> {
       if (product1 == null) {
         throw new IllegalArgumentException();
       }
-      CriteriaBuilder cb = em.getCriteriaBuilder();
-      CriteriaUpdate<Order> update = cb.createCriteriaUpdate(Order.class);
-      Root<Order> root = update.from(Order.class);
+      CriteriaUpdate<Product> update = cb.createCriteriaUpdate(Product.class);
+      Root<Product> root = update.from(Product.class);
 
       update.set(root.get("name"), product.getName());
       update.set(root.get("description"), product.getDescription());
