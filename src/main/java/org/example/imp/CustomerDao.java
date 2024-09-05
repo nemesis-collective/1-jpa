@@ -12,8 +12,7 @@ import javax.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.Customer;
-import org.example.model.Order;
-import org.example.model.Product;
+
 
 @Slf4j
 public class CustomerDao implements Dao<Customer> {
@@ -78,11 +77,10 @@ public class CustomerDao implements Dao<Customer> {
       if (customer1 == null) {
         throw new IllegalArgumentException();
       }
-      CriteriaBuilder cb = em.getCriteriaBuilder();
       CriteriaUpdate<Customer> update = cb.createCriteriaUpdate(Customer.class);
       Root<Customer> root = update.from(Customer.class);
 
-      update.set(root.get("name"),customer1.getName());
+      update.set(root.get("name"),customer.getName());
       update.set(root.get("email"), customer.getEmail());
       update.set(root.get("address"), customer.getAddress());
       update.set(root.get("phone"), customer.getPhone());
