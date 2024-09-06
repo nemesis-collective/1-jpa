@@ -13,7 +13,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
+
+import org.example.imp.CustomerDao;
 import org.example.imp.OrderDao;
+import org.example.imp.ProductDao;
 import org.example.model.Customer;
 import org.example.model.LineItem;
 import org.example.model.Order;
@@ -27,6 +30,8 @@ public class OrderDAOTest {
 
   EntityManagerFactory etf = Persistence.createEntityManagerFactory("persistence");
   OrderDao orderDao = new OrderDao(etf);
+  CustomerDao customerDao = new CustomerDao(etf);
+  ProductDao productDao = new ProductDao(etf);
   Customer customer =
       new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
 
@@ -36,7 +41,7 @@ public class OrderDAOTest {
 
   LineItem lineItem = new LineItem(null, 2, 10, "dollars", product, order);
 
-  @BeforeEach
+  @AfterEach
   public void tearDown() throws IOException {
     Files.write(
         Paths.get(LOG_PATH),
@@ -47,14 +52,16 @@ public class OrderDAOTest {
 
   @Test
   @org.junit.jupiter.api.Order(1)
-  void addOrderTest_whenAddAnOrder_mustNotThrowException() {
+  void addTest_whenAddAnOrder_mustNotThrowException() {
     order.addLineItem(lineItem);
+    customerDao.add(customer);
+    productDao.add(product);
     assertDoesNotThrow(() -> orderDao.add(order));
   }
 
   @Test
   @org.junit.jupiter.api.Order(2)
-  void addOrderTest_whenAddAnOrderFails_mustNotThrowException() {
+  void addTest_whenAddAnOrderFails_mustNotThrowException() {
     EntityManagerFactory etfMock = mock(EntityManagerFactory.class);
     EntityManager emMock = mock(EntityManager.class);
     EntityTransaction transaction = mock(EntityTransaction.class);
@@ -77,7 +84,7 @@ public class OrderDAOTest {
   @Test
   @org.junit.jupiter.api.Order(4)
   void getTest_whenOrderIdIsInvalid_mustNotThrowException() throws IOException {
-     orderDao.get(2L);
+     orderDao.get(5L);
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);
     assertTrue(logContent.contains("Unable to get order."));
@@ -129,14 +136,14 @@ public class OrderDAOTest {
 
   @Test
   @org.junit.jupiter.api.Order(9)
-  void deleteTest_whenOrderIdIsValid_mustNotThrowException() throws IOException {
+  void deleteTest_whenOrderIdIsValid_mustNotThrowException() {
     assertDoesNotThrow(() -> orderDao.delete(1L));
   }
 
   @Test
   @org.junit.jupiter.api.Order(10)
   void deleteTest_whenOrderIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-    orderDao.delete(2L);
+    orderDao.delete(5L);
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);
 
