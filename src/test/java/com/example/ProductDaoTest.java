@@ -69,7 +69,7 @@ public class ProductDaoTest {
     @Test
     @org.junit.jupiter.api.Order(4)
     void getTest_whenProductIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-        productDao.get(2L);
+        productDao.get(5L);
         final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
         final String logContent = String.join("\n", logLines);
         assertTrue(logContent.contains("Unable to get product."));
@@ -112,9 +112,9 @@ public class ProductDaoTest {
 
     @Test
     @Order(8)
-    void updateTest_whenCustomerIsInvalid_mustReceiveErrorMessage() throws IOException {
+    void updateTest_whenProductIsInvalid_mustReceiveErrorMessage() throws IOException {
         Product product1 =
-                new Product(2L, "Vodka", "500ml", 10, "real");
+                new Product(5L, "Vodka", "500ml", 10, "real");
         productDao.update(product1);
         final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
         final String logContent = String.join("\n", logLines);
@@ -130,7 +130,7 @@ public class ProductDaoTest {
     @Test
     @Order(10)
     void deleteTest_whenProductIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-        productDao.delete(2L);
+        productDao.delete(5L);
         final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
         final String logContent = String.join("\n", logLines);
 
