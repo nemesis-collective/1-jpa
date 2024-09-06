@@ -5,7 +5,6 @@ import javax.persistence.*;
 import javax.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
-import org.example.model.LineItem;
 import org.example.model.Order;
 
 @Slf4j
@@ -25,12 +24,7 @@ public class OrderDao implements Dao<Order> {
   @Override
   public void add(Order order) {
     try {
-      em.persist(order.getCustomer());
       em.persist(order);
-      for (LineItem item : order.getLineItems()) {
-        em.persist(item.getProduct());
-        em.persist(item);
-      }
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to add order.");
     } finally {
