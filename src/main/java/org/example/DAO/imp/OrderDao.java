@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.Order;
 
+/** Class responsible for database operations at order entity. */
 @Slf4j
 public class OrderDao implements Dao<Order> {
 
@@ -21,6 +22,11 @@ public class OrderDao implements Dao<Order> {
     em.getTransaction().begin();
   }
 
+  /**
+   * Uses an entity manager to insert an order into the database.
+   *
+   * @param  order the order object who will be added at database.
+   */
   @Override
   public void add(Order order) {
     try {
@@ -32,6 +38,12 @@ public class OrderDao implements Dao<Order> {
     }
   }
 
+  /**
+   * Uses an entity manager to insert an order into the database.
+   *
+   * @param  id the order id who will be searched at database.
+   * @return a order object.
+   */
   @Override
   public Order get(Long id) {
     Order order = null;
@@ -46,6 +58,11 @@ public class OrderDao implements Dao<Order> {
     return order;
   }
 
+  /**
+   * Uses an entity manager to search all orders into the database.
+   *
+   * @return an order list.
+   */
   @Override
   public List<Order> getAll() {
     List<Order> list = List.of();
@@ -64,6 +81,11 @@ public class OrderDao implements Dao<Order> {
     return list;
   }
 
+  /**
+   * Uses an entity manager to update an order into the database.
+   *
+   * @param  order the order who will be updated at database.
+   */
   @Override
   public void update(Order order) {
     try {
@@ -88,6 +110,11 @@ public class OrderDao implements Dao<Order> {
     }
   }
 
+  /**
+   * Uses an entity manager to delete an order into the database.
+   *
+   * @param  id the order id who will be deleted at database.
+   */
   @Override
   public void delete(Long id) {
     try {

@@ -27,6 +27,11 @@ public class CustomerDao implements Dao<Customer> {
     em.getTransaction().begin();
   }
 
+  /**
+   * Uses an entity manager to insert a customer into the database.
+   *
+   * @param  customer the customer object who will be added at database.
+   */
   @Override
   public void add(Customer customer) {
     try {
@@ -38,6 +43,12 @@ public class CustomerDao implements Dao<Customer> {
     }
   }
 
+  /**
+   * Uses an entity manager to insert a customer into the database.
+   *
+   * @param  id the customer id who will be searched at database.
+   * @return a customer object.
+   */
   @Override
   public Customer get(Long id) {
     Customer customer = null;
@@ -52,6 +63,11 @@ public class CustomerDao implements Dao<Customer> {
     return customer;
   }
 
+  /**
+   * Uses an entity manager to search all customers into the database.
+   *
+   * @return a customer list.
+   */
   @Override
   public List<Customer> getAll() {
     List<Customer> list = List.of();
@@ -70,6 +86,11 @@ public class CustomerDao implements Dao<Customer> {
     return list;
   }
 
+  /**
+   * Uses an entity manager to update a customer into the database.
+   *
+   * @param  customer the customer who will be updated at database.
+   */
   @Override
   public void update(Customer customer) {
     try {
@@ -95,6 +116,11 @@ public class CustomerDao implements Dao<Customer> {
     }
   }
 
+  /**
+   * Uses an entity manager to delete a customer into the database.
+   *
+   * @param  id the customer id who will be deleted at database.
+   */
   @Override
   public void delete(Long id) {
     try {
