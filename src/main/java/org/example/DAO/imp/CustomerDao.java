@@ -24,7 +24,6 @@ public class CustomerDao implements Dao<Customer> {
     this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
-    em.getTransaction().begin();
   }
 
   /**
@@ -35,6 +34,7 @@ public class CustomerDao implements Dao<Customer> {
   @Override
   public void add(Customer customer) {
     try {
+      em.getTransaction().begin();
       em.persist(customer);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to add customer.{}",e.getMessage());
@@ -53,6 +53,7 @@ public class CustomerDao implements Dao<Customer> {
   public Customer get(Long id) {
     Customer customer = null;
     try {
+      em.getTransaction().begin();
       customer = em.find(Customer.class, id);
       if(customer == null){
         throw new IllegalArgumentException();
@@ -72,6 +73,7 @@ public class CustomerDao implements Dao<Customer> {
   public List<Customer> getAll() {
     List<Customer> list = List.of();
     try {
+      em.getTransaction().begin();
       CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
 
       Root<Customer> root = cq.from(Customer.class);
@@ -94,7 +96,8 @@ public class CustomerDao implements Dao<Customer> {
   @Override
   public void update(Customer customer) {
     try {
-     Customer customer1 = em.find(Customer.class, customer.getId());
+      em.getTransaction().begin();
+      Customer customer1 = em.find(Customer.class, customer.getId());
       if (customer1 == null) {
         throw new IllegalArgumentException();
       }
@@ -124,6 +127,7 @@ public class CustomerDao implements Dao<Customer> {
   @Override
   public void delete(Long id) {
     try {
+      em.getTransaction().begin();
       Customer customer = em.find(Customer.class, id);
       em.remove(customer);
     } catch (IllegalArgumentException | TransactionRequiredException e) {

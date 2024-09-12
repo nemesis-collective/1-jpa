@@ -19,7 +19,6 @@ public class OrderDao implements Dao<Order> {
     this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
-    em.getTransaction().begin();
   }
 
   /**
@@ -30,6 +29,7 @@ public class OrderDao implements Dao<Order> {
   @Override
   public void add(Order order) {
     try {
+      em.getTransaction().begin();
       em.persist(order);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to add order.");
@@ -48,6 +48,7 @@ public class OrderDao implements Dao<Order> {
   public Order get(Long id) {
     Order order = null;
     try {
+      em.getTransaction().begin();
       order = em.find(Order.class, id);
       if(order == null){
         throw new IllegalArgumentException();
@@ -67,6 +68,7 @@ public class OrderDao implements Dao<Order> {
   public List<Order> getAll() {
     List<Order> list = List.of();
     try {
+      em.getTransaction().begin();
       CriteriaQuery<Order> cq = cb.createQuery(Order.class);
 
       Root<Order> root = cq.from(Order.class);
@@ -89,6 +91,7 @@ public class OrderDao implements Dao<Order> {
   @Override
   public void update(Order order) {
     try {
+      em.getTransaction().begin();
       Order order1 = em.find(Order.class, order.getId());
       if (order1 == null) {
         throw new IllegalArgumentException();
@@ -118,6 +121,7 @@ public class OrderDao implements Dao<Order> {
   @Override
   public void delete(Long id) {
     try {
+      em.getTransaction().begin();
       Order order = em.find(Order.class, id);
       em.remove(order);
     } catch (IllegalArgumentException | TransactionRequiredException e) {

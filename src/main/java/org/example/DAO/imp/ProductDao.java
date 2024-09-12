@@ -26,7 +26,6 @@ public class ProductDao implements Dao<Product> {
     this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
-    em.getTransaction().begin();
   }
 
   /**
@@ -37,6 +36,7 @@ public class ProductDao implements Dao<Product> {
   @Override
   public void add(Product product) {
     try {
+      em.getTransaction().begin();
       em.persist(product);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to add product.");
@@ -55,6 +55,7 @@ public class ProductDao implements Dao<Product> {
   public Product get(Long id) {
     Product product = null;
     try {
+      em.getTransaction().begin();
       product = em.find(Product.class, id);
       if(product == null){
         throw new IllegalArgumentException();
@@ -74,6 +75,7 @@ public class ProductDao implements Dao<Product> {
   public List<Product> getAll() {
     List<Product> list = List.of();
     try {
+      em.getTransaction().begin();
       CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 
       Root<Product> root = cq.from(Product.class);
@@ -96,6 +98,7 @@ public class ProductDao implements Dao<Product> {
   @Override
   public void update(Product product) {
     try {
+      em.getTransaction().begin();
       Product product1 = em.find(Product.class, product.getId());
       if (product1 == null) {
         throw new IllegalArgumentException();
@@ -126,6 +129,7 @@ public class ProductDao implements Dao<Product> {
   @Override
   public void delete(Long id) {
     try {
+      em.getTransaction().begin();
       Product product = em.find(Product.class, id);
       em.remove(product);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
