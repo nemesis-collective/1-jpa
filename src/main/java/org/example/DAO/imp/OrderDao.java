@@ -1,4 +1,4 @@
-package org.example.imp;
+package org.example.DAO.imp;
 
 import java.util.List;
 import javax.persistence.*;

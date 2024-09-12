@@ -1,4 +1,4 @@
-package org.example.imp;
+package org.example.DAO.imp;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,7 +15,7 @@ import org.example.model.LineItem;
 import org.example.model.Order;
 import org.example.model.Product;
 
-
+/** Class responsible for database operations at lineItem entity. */
 @Slf4j
 public class LineItemDao implements Dao<LineItem> {
   EntityManagerFactory etf;
