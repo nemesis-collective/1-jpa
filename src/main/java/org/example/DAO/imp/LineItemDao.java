@@ -29,6 +29,11 @@ public class LineItemDao implements Dao<LineItem> {
     em.getTransaction().begin();
   }
 
+  /**
+   * Uses an entity manager to insert a lineItem into the database.
+   *
+   * @param  lineItem the lineItem object who will be added at database.
+   */
   @Override
   public void add(LineItem lineItem) {
     try {
@@ -40,6 +45,12 @@ public class LineItemDao implements Dao<LineItem> {
     }
   }
 
+  /**
+   * Uses an entity manager to insert a lineItem into the database.
+   *
+   * @param  id the lineItem id who will be searched at database.
+   * @return a lineItem object.
+   */
   @Override
   public LineItem get(Long id) {
     LineItem lineItem = null;
@@ -54,6 +65,11 @@ public class LineItemDao implements Dao<LineItem> {
     return lineItem;
   }
 
+  /**
+   * Uses an entity manager to search all lineItems into the database.
+   *
+   * @return a lineItem list.
+   */
   @Override
   public List<LineItem> getAll() {
     List<LineItem> list = List.of();
@@ -72,6 +88,11 @@ public class LineItemDao implements Dao<LineItem> {
     return list;
   }
 
+  /**
+   * Uses an entity manager to update a lineItem into the database.
+   *
+   * @param  lineItem the lineItem who will be updated at database.
+   */
   @Override
   public void update(LineItem lineItem) {
     try {
@@ -97,6 +118,11 @@ public class LineItemDao implements Dao<LineItem> {
   }
   }
 
+  /**
+   * Uses an entity manager to delete a lineItem into the database.
+   *
+   * @param  id the lineItem id who will be deleted at database.
+   */
   @Override
   public void delete(Long id) {
     try {

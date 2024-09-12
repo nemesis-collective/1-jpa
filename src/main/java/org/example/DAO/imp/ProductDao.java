@@ -14,6 +14,7 @@ import org.example.DAO.Dao;
 import org.example.model.Order;
 import org.example.model.Product;
 
+/** Class responsible for database operations at product entity. */
 @Slf4j
 public class ProductDao implements Dao<Product> {
 
@@ -28,6 +29,11 @@ public class ProductDao implements Dao<Product> {
     em.getTransaction().begin();
   }
 
+  /**
+   * Uses an entity manager to insert a product into the database.
+   *
+   * @param  product the product object who will be added at database.
+   */
   @Override
   public void add(Product product) {
     try {
@@ -39,6 +45,12 @@ public class ProductDao implements Dao<Product> {
     }
   }
 
+  /**
+   * Uses an entity manager to insert a product into the database.
+   *
+   * @param  id the product id who will be searched at database.
+   * @return a product object.
+   */
   @Override
   public Product get(Long id) {
     Product product = null;
@@ -53,6 +65,11 @@ public class ProductDao implements Dao<Product> {
     return product;
   }
 
+  /**
+   * Uses an entity manager to search all products into the database.
+   *
+   * @return a product list.
+   */
   @Override
   public List<Product> getAll() {
     List<Product> list = List.of();
@@ -71,6 +88,11 @@ public class ProductDao implements Dao<Product> {
     return list;
   }
 
+  /**
+   * Uses an entity manager to update a product into the database.
+   *
+   * @param  product the product  who will be updated at database.
+   */
   @Override
   public void update(Product product) {
     try {
@@ -96,6 +118,11 @@ public class ProductDao implements Dao<Product> {
     }
   }
 
+  /**
+   * Uses an entity manager to delete a product into the database.
+   *
+   * @param  id the product id who will be deleted at database.
+   */
   @Override
   public void delete(Long id) {
     try {
