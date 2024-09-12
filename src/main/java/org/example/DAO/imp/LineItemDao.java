@@ -26,7 +26,6 @@ public class LineItemDao implements Dao<LineItem> {
     this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
-    em.getTransaction().begin();
   }
 
   /**
@@ -37,6 +36,7 @@ public class LineItemDao implements Dao<LineItem> {
   @Override
   public void add(LineItem lineItem) {
     try {
+      em.getTransaction().begin();
       em.persist(lineItem);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to add item to order.");
@@ -55,6 +55,7 @@ public class LineItemDao implements Dao<LineItem> {
   public LineItem get(Long id) {
     LineItem lineItem = null;
     try {
+      em.getTransaction().begin();
       lineItem = em.find(LineItem.class, id);
       if(lineItem == null){
         throw new IllegalArgumentException();
@@ -74,6 +75,7 @@ public class LineItemDao implements Dao<LineItem> {
   public List<LineItem> getAll() {
     List<LineItem> list = List.of();
     try {
+      em.getTransaction().begin();
       CriteriaQuery<LineItem> cq = cb.createQuery(LineItem.class);
 
       Root<LineItem> root = cq.from(LineItem.class);
@@ -96,21 +98,22 @@ public class LineItemDao implements Dao<LineItem> {
   @Override
   public void update(LineItem lineItem) {
     try {
-    LineItem lineItem1 = em.find(LineItem.class, lineItem.getId());
-    if (lineItem1 == null) {
-      throw new IllegalArgumentException();
-    }
-    CriteriaBuilder cb = em.getCriteriaBuilder();
-    CriteriaUpdate<LineItem> update = cb.createCriteriaUpdate(LineItem.class);
-    Root<LineItem> root = update.from(LineItem.class);
+      em.getTransaction().begin();
+      LineItem lineItem1 = em.find(LineItem.class, lineItem.getId());
+      if (lineItem1 == null) {
+        throw new IllegalArgumentException();
+      }
+      CriteriaBuilder cb = em.getCriteriaBuilder();
+      CriteriaUpdate<LineItem> update = cb.createCriteriaUpdate(LineItem.class);
+      Root<LineItem> root = update.from(LineItem.class);
 
-    update.set(root.get("currency"), lineItem1.getCurrency());
-    update.set(root.get("totalPrice"), lineItem1.getTotalPrice());
-    update.set(root.get("quantity"), lineItem1.getQuantity());
+      update.set(root.get("currency"), lineItem1.getCurrency());
+      update.set(root.get("totalPrice"), lineItem1.getTotalPrice());
+      update.set(root.get("quantity"), lineItem1.getQuantity());
 
-    update.where(cb.equal(root.get("id"), lineItem1.getId()));
+      update.where(cb.equal(root.get("id"), lineItem1.getId()));
 
-    em.createQuery(update).executeUpdate();
+      em.createQuery(update).executeUpdate();
   } catch (Exception e) {
     log.error("Unable to update item.");
   } finally {
@@ -126,6 +129,7 @@ public class LineItemDao implements Dao<LineItem> {
   @Override
   public void delete(Long id) {
     try {
+      em.getTransaction().begin();
       LineItem lineItem = em.find(LineItem.class, id);
       em.remove(lineItem);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
