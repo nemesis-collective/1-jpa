@@ -1,4 +1,4 @@
-package org.example.imp;
+package org.example.DAO.imp;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.Customer;
 
-
+/** Class responsible for database operations at customer entity. */
 @Slf4j
 public class CustomerDao implements Dao<Customer> {
   EntityManagerFactory etf;
@@ -32,7 +32,7 @@ public class CustomerDao implements Dao<Customer> {
     try {
       em.persist(customer);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to add customer.");
+      log.error("Unable to add customer.{}",e.getMessage());
     }finally{
       em.getTransaction().commit();
     }
