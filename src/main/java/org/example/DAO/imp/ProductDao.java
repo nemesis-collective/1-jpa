@@ -8,10 +8,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
-import org.example.model.Order;
 import org.example.model.Product;
 
 /** Class responsible for database operations at product entity. */
@@ -31,7 +29,7 @@ public class ProductDao implements Dao<Product> {
   /**
    * Uses an entity manager to insert a product into the database.
    *
-   * @param  product the product object who will be added at database.
+   * @param product the product object who will be added at database.
    */
   @Override
   public void add(Product product) {
@@ -48,7 +46,7 @@ public class ProductDao implements Dao<Product> {
   /**
    * Uses an entity manager to insert a product into the database.
    *
-   * @param  id the product id who will be searched at database.
+   * @param id the product id who will be searched at database.
    * @return a product object.
    */
   @Override
@@ -57,7 +55,7 @@ public class ProductDao implements Dao<Product> {
     try {
       em.getTransaction().begin();
       product = em.find(Product.class, id);
-      if(product == null){
+      if (product == null) {
         throw new IllegalArgumentException();
       }
     } catch (IllegalArgumentException e) {
@@ -93,7 +91,7 @@ public class ProductDao implements Dao<Product> {
   /**
    * Uses an entity manager to update a product into the database.
    *
-   * @param  product the product  who will be updated at database.
+   * @param product the product who will be updated at database.
    */
   @Override
   public void update(Product product) {
@@ -124,7 +122,7 @@ public class ProductDao implements Dao<Product> {
   /**
    * Uses an entity manager to delete a product into the database.
    *
-   * @param  id the product id who will be deleted at database.
+   * @param id the product id who will be deleted at database.
    */
   @Override
   public void delete(Long id) {

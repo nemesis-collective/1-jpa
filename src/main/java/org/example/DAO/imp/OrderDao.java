@@ -24,7 +24,7 @@ public class OrderDao implements Dao<Order> {
   /**
    * Uses an entity manager to insert an order into the database.
    *
-   * @param  order the order object who will be added at database.
+   * @param order the order object who will be added at database.
    */
   @Override
   public void add(Order order) {
@@ -41,7 +41,7 @@ public class OrderDao implements Dao<Order> {
   /**
    * Uses an entity manager to insert an order into the database.
    *
-   * @param  id the order id who will be searched at database.
+   * @param id the order id who will be searched at database.
    * @return a order object.
    */
   @Override
@@ -50,7 +50,7 @@ public class OrderDao implements Dao<Order> {
     try {
       em.getTransaction().begin();
       order = em.find(Order.class, id);
-      if(order == null){
+      if (order == null) {
         throw new IllegalArgumentException();
       }
     } catch (IllegalArgumentException e) {
@@ -86,7 +86,7 @@ public class OrderDao implements Dao<Order> {
   /**
    * Uses an entity manager to update an order into the database.
    *
-   * @param  order the order who will be updated at database.
+   * @param order the order who will be updated at database.
    */
   @Override
   public void update(Order order) {
@@ -116,7 +116,7 @@ public class OrderDao implements Dao<Order> {
   /**
    * Uses an entity manager to delete an order into the database.
    *
-   * @param  id the order id who will be deleted at database.
+   * @param id the order id who will be deleted at database.
    */
   @Override
   public void delete(Long id) {
