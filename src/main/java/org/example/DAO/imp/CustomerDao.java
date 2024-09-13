@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.Customer;
@@ -29,7 +28,7 @@ public class CustomerDao implements Dao<Customer> {
   /**
    * Uses an entity manager to insert a customer into the database.
    *
-   * @param  customer the customer object who will be added at database.
+   * @param customer the customer object who will be added at database.
    */
   @Override
   public void add(Customer customer) {
@@ -37,8 +36,8 @@ public class CustomerDao implements Dao<Customer> {
       em.getTransaction().begin();
       em.persist(customer);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to add customer.{}",e.getMessage());
-    }finally{
+      log.error("Unable to add customer.{}", e.getMessage());
+    } finally {
       em.getTransaction().commit();
     }
   }
@@ -46,7 +45,7 @@ public class CustomerDao implements Dao<Customer> {
   /**
    * Uses an entity manager to insert a customer into the database.
    *
-   * @param  id the customer id who will be searched at database.
+   * @param id the customer id who will be searched at database.
    * @return a customer object.
    */
   @Override
@@ -55,7 +54,7 @@ public class CustomerDao implements Dao<Customer> {
     try {
       em.getTransaction().begin();
       customer = em.find(Customer.class, id);
-      if(customer == null){
+      if (customer == null) {
         throw new IllegalArgumentException();
       }
     } catch (IllegalArgumentException e) {
@@ -91,7 +90,7 @@ public class CustomerDao implements Dao<Customer> {
   /**
    * Uses an entity manager to update a customer into the database.
    *
-   * @param  customer the customer who will be updated at database.
+   * @param customer the customer who will be updated at database.
    */
   @Override
   public void update(Customer customer) {
@@ -104,7 +103,7 @@ public class CustomerDao implements Dao<Customer> {
       CriteriaUpdate<Customer> update = cb.createCriteriaUpdate(Customer.class);
       Root<Customer> root = update.from(Customer.class);
 
-      update.set(root.get("name"),customer.getName());
+      update.set(root.get("name"), customer.getName());
       update.set(root.get("email"), customer.getEmail());
       update.set(root.get("address"), customer.getAddress());
       update.set(root.get("phone"), customer.getPhone());
@@ -122,7 +121,7 @@ public class CustomerDao implements Dao<Customer> {
   /**
    * Uses an entity manager to delete a customer into the database.
    *
-   * @param  id the customer id who will be deleted at database.
+   * @param id the customer id who will be deleted at database.
    */
   @Override
   public void delete(Long id) {

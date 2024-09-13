@@ -25,12 +25,7 @@ public class LineItem {
   private Product product;
 
   public LineItem(
-      Long id,
-      Integer quantity,
-      double totalPrice,
-      String currency,
-      Product product,
-      Order order) {
+      Long id, Integer quantity, double totalPrice, String currency, Product product, Order order) {
     this.id = id;
     this.quantity = quantity;
     this.totalPrice = totalPrice;

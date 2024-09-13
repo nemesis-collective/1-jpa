@@ -8,12 +8,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-
 import lombok.extern.slf4j.Slf4j;
 import org.example.DAO.Dao;
 import org.example.model.LineItem;
-import org.example.model.Order;
-import org.example.model.Product;
 
 /** Class responsible for database operations at lineItem entity. */
 @Slf4j
@@ -31,7 +28,7 @@ public class LineItemDao implements Dao<LineItem> {
   /**
    * Uses an entity manager to insert a lineItem into the database.
    *
-   * @param  lineItem the lineItem object who will be added at database.
+   * @param lineItem the lineItem object who will be added at database.
    */
   @Override
   public void add(LineItem lineItem) {
@@ -40,7 +37,7 @@ public class LineItemDao implements Dao<LineItem> {
       em.persist(lineItem);
     } catch (IllegalArgumentException | TransactionRequiredException e) {
       log.error("Unable to add item to order.");
-    }finally{
+    } finally {
       em.getTransaction().commit();
     }
   }
@@ -48,7 +45,7 @@ public class LineItemDao implements Dao<LineItem> {
   /**
    * Uses an entity manager to insert a lineItem into the database.
    *
-   * @param  id the lineItem id who will be searched at database.
+   * @param id the lineItem id who will be searched at database.
    * @return a lineItem object.
    */
   @Override
@@ -57,7 +54,7 @@ public class LineItemDao implements Dao<LineItem> {
     try {
       em.getTransaction().begin();
       lineItem = em.find(LineItem.class, id);
-      if(lineItem == null){
+      if (lineItem == null) {
         throw new IllegalArgumentException();
       }
     } catch (IllegalArgumentException e) {
@@ -93,7 +90,7 @@ public class LineItemDao implements Dao<LineItem> {
   /**
    * Uses an entity manager to update a lineItem into the database.
    *
-   * @param  lineItem the lineItem who will be updated at database.
+   * @param lineItem the lineItem who will be updated at database.
    */
   @Override
   public void update(LineItem lineItem) {
@@ -114,17 +111,17 @@ public class LineItemDao implements Dao<LineItem> {
       update.where(cb.equal(root.get("id"), lineItem1.getId()));
 
       em.createQuery(update).executeUpdate();
-  } catch (Exception e) {
-    log.error("Unable to update item.");
-  } finally {
-    em.getTransaction().commit();
-  }
+    } catch (Exception e) {
+      log.error("Unable to update item.");
+    } finally {
+      em.getTransaction().commit();
+    }
   }
 
   /**
    * Uses an entity manager to delete a lineItem into the database.
    *
-   * @param  id the lineItem id who will be deleted at database.
+   * @param id the lineItem id who will be deleted at database.
    */
   @Override
   public void delete(Long id) {
