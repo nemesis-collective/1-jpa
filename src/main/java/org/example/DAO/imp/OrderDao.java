@@ -45,7 +45,6 @@ public class OrderDao implements Dao<Order> {
   public Order get(Long id) {
     Order order = null;
     try {
-      em.getTransaction().begin();
       order = em.find(Order.class, id);
       if (order == null) {
         throw new IllegalArgumentException();
@@ -65,7 +64,6 @@ public class OrderDao implements Dao<Order> {
   public List<Order> getAll() {
     List<Order> list = List.of();
     try {
-      em.getTransaction().begin();
       CriteriaQuery<Order> cq = cb.createQuery(Order.class);
 
       Root<Order> root = cq.from(Order.class);

@@ -50,7 +50,6 @@ public class LineItemDao implements Dao<LineItem> {
   public LineItem get(Long id) {
     LineItem lineItem = null;
     try {
-      em.getTransaction().begin();
       lineItem = em.find(LineItem.class, id);
       if (lineItem == null) {
         throw new IllegalArgumentException();
@@ -70,7 +69,6 @@ public class LineItemDao implements Dao<LineItem> {
   public List<LineItem> getAll() {
     List<LineItem> list = List.of();
     try {
-      em.getTransaction().begin();
       CriteriaQuery<LineItem> cq = cb.createQuery(LineItem.class);
 
       Root<LineItem> root = cq.from(LineItem.class);
