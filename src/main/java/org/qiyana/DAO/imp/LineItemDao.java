@@ -6,6 +6,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
 import org.qiyana.model.LineItem;
@@ -25,7 +27,7 @@ public class LineItemDao implements Dao<LineItem> {
    * @param lineItem the lineItem object who will be added at database.
    */
   @Override
-  public void add(LineItem lineItem) {
+  public void add(@NonNull LineItem lineItem) {
     em.getTransaction().begin();
     em.persist(lineItem);
     em.getTransaction().commit();
@@ -38,7 +40,7 @@ public class LineItemDao implements Dao<LineItem> {
    * @return a lineItem object.
    */
   @Override
-  public LineItem get(Long id) {
+  public LineItem get(@NonNull Long id) {
     return em.find(LineItem.class, id);
   }
 
@@ -65,7 +67,7 @@ public class LineItemDao implements Dao<LineItem> {
    * @param lineItem the lineItem who will be updated at database.
    */
   @Override
-  public void update(LineItem lineItem) {
+  public void update(@NonNull LineItem lineItem) {
     em.getTransaction().begin();
     em.merge(lineItem);
     em.getTransaction().commit();
@@ -77,7 +79,7 @@ public class LineItemDao implements Dao<LineItem> {
    * @param id the lineItem id who will be deleted at database.
    */
   @Override
-  public void delete(Long id) {
+  public void delete(@NonNull Long id) {
     em.getTransaction().begin();
     LineItem lineItem = em.find(LineItem.class, id);
     em.remove(lineItem);

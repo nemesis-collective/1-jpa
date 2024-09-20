@@ -6,6 +6,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
 import org.qiyana.model.Product;
@@ -25,7 +27,7 @@ public class ProductDao implements Dao<Product> {
    * @param product the product object who will be added at database.
    */
   @Override
-  public void add(Product product) {
+  public void add(@NonNull Product product) {
     em.getTransaction().begin();
     em.persist(product);
     em.getTransaction().commit();
@@ -38,7 +40,7 @@ public class ProductDao implements Dao<Product> {
    * @return a product object.
    */
   @Override
-  public Product get(Long id) {
+  public Product get(@NonNull Long id) {
     return em.find(Product.class, id);
   }
 
@@ -65,7 +67,7 @@ public class ProductDao implements Dao<Product> {
    * @param product the product who will be updated at database.
    */
   @Override
-  public void update(Product product) {
+  public void update(@NonNull Product product) {
     em.getTransaction().begin();
     em.merge(product);
     em.getTransaction().commit();
@@ -77,7 +79,7 @@ public class ProductDao implements Dao<Product> {
    * @param id the product id who will be deleted at database.
    */
   @Override
-  public void delete(Long id) {
+  public void delete(@NonNull Long id) {
     em.getTransaction().begin();
     Product product = em.find(Product.class, id);
     em.remove(product);

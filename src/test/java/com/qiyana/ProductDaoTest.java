@@ -5,122 +5,94 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.*;
 import org.qiyana.DAO.imp.ProductDao;
 import org.qiyana.model.Product;
 
 public class ProductDaoTest {
-  private static final String LOG_PATH = "logs/app.log";
+  static EntityManagerFactory etf;
+  static EntityManagerFactory etfMock;
+  static EntityManager emMock;
+  static EntityTransaction transaction;
+  static ProductDao productDao;
+  static ProductDao productDaoMock;
+  static Product product;
 
-  EntityManagerFactory etf = Persistence.createEntityManagerFactory("persistence");
-  ProductDao productDao = new ProductDao(etf);
-  Product product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
+  @BeforeAll
+  public static void init() {
+    etf = Persistence.createEntityManagerFactory("persistence");
+    productDao = new ProductDao(etf);
+    etfMock = mock(EntityManagerFactory.class);
+    transaction = mock(EntityTransaction.class);
+    emMock = mock(EntityManager.class);
+    when(etfMock.createEntityManager()).thenReturn(emMock);
+    when(emMock.getTransaction()).thenReturn(transaction);
+    productDaoMock = new ProductDao(etfMock);
+  }
 
   @BeforeEach
-  public void tearDown() throws IOException {
-    Files.write(
-        Paths.get(LOG_PATH),
-        new byte[0],
-        StandardOpenOption.TRUNCATE_EXISTING,
-        StandardOpenOption.CREATE);
+  public void setUp() {
+    product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
+    productDao.add(product);
   }
 
   @Test
-  void addTest_whenAddProduct_mustNotThrowException() {
+  void addTest_whenProductAddedCorrectly_mustNotThrowException() {
     assertDoesNotThrow(() -> productDao.add(product));
   }
 
   @Test
-  void addOrderTest_whenAddCustomerFails_mustReceiveErrorMessage() {
-    EntityManagerFactory etfMock = mock(EntityManagerFactory.class);
-    EntityManager emMock = mock(EntityManager.class);
-    EntityTransaction transaction = mock(EntityTransaction.class);
-
-    when(etfMock.createEntityManager()).thenReturn(emMock);
-    when(emMock.getTransaction()).thenReturn(transaction);
+  void addTest_shouldThrowException() {
     doThrow(new IllegalArgumentException()).when(emMock).persist(any());
-
-    ProductDao productDaoMock1 = new ProductDao(etfMock);
-
-    assertDoesNotThrow(() -> productDaoMock1.add(product));
+    assertThrows(IllegalArgumentException.class, () -> productDaoMock.add(product));
   }
 
   @Test
-  void getTest_whenProductIdIsValid_mustReturnProduct() {
-    productDao.add(product);
-    assertNotNull(productDao.get(1L));
+  void getTest_mustReturnProduct() {
+    assertNotNull(productDao.get(product.getId()));
   }
 
   @Test
-  void getTest_whenProductIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-    productDao.get(10L);
-    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
-    final String logContent = String.join("\n", logLines);
-    assertTrue(logContent.contains("Unable to get product."));
+  void getTest_mustThrowException() {
+    doThrow(new IllegalArgumentException()).when(emMock).find(any(), any());
+    assertThrows(IllegalArgumentException.class, () -> productDaoMock.get(product.getId()));
   }
 
   @Test
-  void getAllTest_mustReturnAllCustomer() {
-    assertDoesNotThrow(() -> productDao.getAll());
+  void getAllTest_mustReturnAllProducts() {
+    assertNotNull(productDao.getAll());
   }
 
   @Test
-  void getAllTest_whenOccursException_mustReceiveErrorMessage() throws IOException {
-    EntityManagerFactory etfMock = mock(EntityManagerFactory.class);
-    EntityManager emMock = mock(EntityManager.class);
-    EntityTransaction transaction = mock(EntityTransaction.class);
-    CriteriaBuilder cb = mock(CriteriaBuilder.class);
-
-    when(etfMock.createEntityManager()).thenReturn(emMock);
-    when(emMock.getTransaction()).thenReturn(transaction);
-    when(emMock.getCriteriaBuilder()).thenReturn(cb);
-    when(cb.createQuery()).thenThrow(new IllegalArgumentException());
-
-    ProductDao productDao1 = new ProductDao(etfMock);
-    productDao1.getAll();
-    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
-    final String logContent = String.join("\n", logLines);
-
-    assertTrue(logContent.contains("Unable to get all products."));
+  void getAllTest_mustThrowException() {
+    when(emMock.getCriteriaBuilder()).thenThrow(new IllegalArgumentException());
+    assertThrows(IllegalArgumentException.class, () -> productDaoMock.getAll());
   }
 
   @Test
-  void updateTest_whenProductIsValid_mustNotThrowException() {
-    productDao.add(product);
-    Product product1 = new Product(3L, "Vodka", "1000ml", 10, "real");
-    assertDoesNotThrow(() -> productDao.update(product1));
+  void updateTest_whenProductCorrectlyUpdated_mustNotThrowException() {
+    Product updatedProduct = new Product(product.getId(), "Vodka", "1000ml", 10, "real");
+    assertDoesNotThrow(() -> productDao.update(updatedProduct));
   }
 
   @Test
-  void updateTest_whenProductIsInvalid_mustReceiveErrorMessage() throws IOException {
-    Product product1 = new Product(10L, "Vodka", "500ml", 10, "real");
-    productDao.update(product1);
-    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
-    final String logContent = String.join("\n", logLines);
-    assertTrue(logContent.contains("Unable to update product."));
+  void updateTest_mustThrowException() {
+    when(emMock.merge(any())).thenThrow(new IllegalArgumentException());
+    assertThrows(IllegalArgumentException.class, () -> productDaoMock.update(product));
   }
 
   @Test
-  void deleteTest_whenProductIdIsValid_mustNotThrowException() {
-    assertDoesNotThrow(() -> productDao.delete(1L));
+  void deleteTest_whenProductCorrectlyDeleted_mustNotThrowException() {
+    assertDoesNotThrow(() -> productDao.delete(product.getId()));
   }
 
   @Test
-  void deleteTest_whenProductIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-    productDao.delete(10L);
-    final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
-    final String logContent = String.join("\n", logLines);
-
-    assertTrue(logContent.contains("Unable to delete product."));
+  void deleteTest_mustThrowException() {
+    doThrow(new IllegalArgumentException()).when(emMock).remove(any());
+    assertThrows(IllegalArgumentException.class, () -> productDaoMock.delete(product.getId()));
   }
 }
