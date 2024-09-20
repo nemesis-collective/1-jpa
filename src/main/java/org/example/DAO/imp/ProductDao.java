@@ -15,13 +15,10 @@ import org.example.model.Product;
 /** Class responsible for database operations at product entity. */
 @Slf4j
 public class ProductDao implements Dao<Product> {
-
-  EntityManagerFactory etf;
   EntityManager em;
   CriteriaBuilder cb;
 
   public ProductDao(EntityManagerFactory etf) {
-    this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
   }

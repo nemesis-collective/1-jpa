@@ -10,13 +10,10 @@ import org.example.model.Order;
 /** Class responsible for database operations at order entity. */
 @Slf4j
 public class OrderDao implements Dao<Order> {
-
-  EntityManagerFactory etf;
   EntityManager em;
   CriteriaBuilder cb;
 
   public OrderDao(EntityManagerFactory etf) {
-    this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
   }
