@@ -15,12 +15,10 @@ import org.example.model.LineItem;
 /** Class responsible for database operations at lineItem entity. */
 @Slf4j
 public class LineItemDao implements Dao<LineItem> {
-  EntityManagerFactory etf;
   EntityManager em;
   CriteriaBuilder cb;
 
   public LineItemDao(EntityManagerFactory etf) {
-    this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
   }

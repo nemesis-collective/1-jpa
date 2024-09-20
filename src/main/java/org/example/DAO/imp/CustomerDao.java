@@ -15,12 +15,10 @@ import org.example.model.Customer;
 /** Class responsible for database operations at customer entity. */
 @Slf4j
 public class CustomerDao implements Dao<Customer> {
-  EntityManagerFactory etf;
   EntityManager em;
   CriteriaBuilder cb;
 
   public CustomerDao(EntityManagerFactory etf) {
-    this.etf = etf;
     em = etf.createEntityManager();
     cb = em.getCriteriaBuilder();
   }
