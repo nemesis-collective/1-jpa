@@ -69,18 +69,7 @@ public class LineItemDao implements Dao<LineItem> {
   @Override
   public void update(LineItem lineItem) {
     em.getTransaction().begin();
-
-    CriteriaBuilder cb = em.getCriteriaBuilder();
-    CriteriaUpdate<LineItem> update = cb.createCriteriaUpdate(LineItem.class);
-    Root<LineItem> root = update.from(LineItem.class);
-
-    update.set(root.get("currency"), lineItem.getCurrency());
-    update.set(root.get("totalPrice"), lineItem.getTotalPrice());
-    update.set(root.get("quantity"), lineItem.getQuantity());
-
-    update.where(cb.equal(root.get("id"), lineItem.getId()));
-
-    em.createQuery(update).executeUpdate();
+    em.merge(lineItem);
     em.getTransaction().commit();
   }
 

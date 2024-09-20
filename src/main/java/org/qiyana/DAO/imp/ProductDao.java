@@ -69,17 +69,7 @@ public class ProductDao implements Dao<Product> {
   @Override
   public void update(Product product) {
     em.getTransaction().begin();
-    CriteriaUpdate<Product> update = cb.createCriteriaUpdate(Product.class);
-    Root<Product> root = update.from(Product.class);
-
-    update.set(root.get("name"), product.getName());
-    update.set(root.get("description"), product.getDescription());
-    update.set(root.get("price"), product.getPrice());
-    update.set(root.get("currency"), product.getCurrency());
-
-    update.where(cb.equal(root.get("id"), product.getId()));
-
-    em.createQuery(update).executeUpdate();
+    em.merge(product);
     em.getTransaction().commit();
   }
 
