@@ -15,11 +15,9 @@ import org.qiyana.model.LineItem;
 @Slf4j
 public class LineItemDao implements Dao<LineItem> {
   EntityManager em;
-  CriteriaBuilder cb;
 
   public LineItemDao(EntityManagerFactory etf) {
     em = etf.createEntityManager();
-    cb = em.getCriteriaBuilder();
   }
 
   /**
@@ -52,6 +50,7 @@ public class LineItemDao implements Dao<LineItem> {
    */
   @Override
   public List<LineItem> getAll() {
+    CriteriaBuilder cb = em.getCriteriaBuilder();
     CriteriaQuery<LineItem> cq = cb.createQuery(LineItem.class);
 
     Root<LineItem> root = cq.from(LineItem.class);

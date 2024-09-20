@@ -15,11 +15,9 @@ import org.qiyana.model.Customer;
 @Slf4j
 public class CustomerDao implements Dao<Customer> {
   EntityManager em;
-  CriteriaBuilder cb;
 
   public CustomerDao(EntityManagerFactory etf) {
     em = etf.createEntityManager();
-    cb = em.getCriteriaBuilder();
   }
 
   /**
@@ -52,6 +50,7 @@ public class CustomerDao implements Dao<Customer> {
    */
   @Override
   public List<Customer> getAll() {
+    CriteriaBuilder cb = em.getCriteriaBuilder();
     CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
 
     Root<Customer> root = cq.from(Customer.class);
