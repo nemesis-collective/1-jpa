@@ -50,7 +50,6 @@ public class ProductDao implements Dao<Product> {
   public Product get(Long id) {
     Product product = null;
     try {
-      em.getTransaction().begin();
       product = em.find(Product.class, id);
       if (product == null) {
         throw new IllegalArgumentException();
@@ -70,7 +69,6 @@ public class ProductDao implements Dao<Product> {
   public List<Product> getAll() {
     List<Product> list = List.of();
     try {
-      em.getTransaction().begin();
       CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 
       Root<Product> root = cq.from(Product.class);

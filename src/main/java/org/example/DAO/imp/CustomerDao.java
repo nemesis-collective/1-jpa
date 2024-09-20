@@ -50,7 +50,6 @@ public class CustomerDao implements Dao<Customer> {
   public Customer get(Long id) {
     Customer customer = null;
     try {
-      em.getTransaction().begin();
       customer = em.find(Customer.class, id);
       if (customer == null) {
         throw new IllegalArgumentException();
@@ -70,7 +69,6 @@ public class CustomerDao implements Dao<Customer> {
   public List<Customer> getAll() {
     List<Customer> list = List.of();
     try {
-      em.getTransaction().begin();
       CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
 
       Root<Customer> root = cq.from(Customer.class);
