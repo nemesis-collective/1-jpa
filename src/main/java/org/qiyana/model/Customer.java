@@ -19,7 +19,7 @@ public class Customer {
   private String address;
   private String phone;
 
-  @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();
 
   public Customer(Long id, String name, String email, String address, String phone) {
