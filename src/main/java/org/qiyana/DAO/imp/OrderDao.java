@@ -11,11 +11,9 @@ import org.qiyana.model.Order;
 @Slf4j
 public class OrderDao implements Dao<Order> {
   EntityManager em;
-  CriteriaBuilder cb;
 
   public OrderDao(EntityManagerFactory etf) {
     em = etf.createEntityManager();
-    cb = em.getCriteriaBuilder();
   }
 
   /**
@@ -48,6 +46,7 @@ public class OrderDao implements Dao<Order> {
    */
   @Override
   public List<Order> getAll() {
+    CriteriaBuilder cb = em.getCriteriaBuilder();
     CriteriaQuery<Order> cq = cb.createQuery(Order.class);
 
     Root<Order> root = cq.from(Order.class);
