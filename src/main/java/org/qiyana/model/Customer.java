@@ -20,7 +20,7 @@ public class Customer {
   private String phone;
 
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Order> orders = new ArrayList<>();
+  private List<Order> orders;
 
   public Customer(Long id, String name, String email, String address, String phone) {
     this.id = id;
@@ -28,6 +28,7 @@ public class Customer {
     this.email = email;
     this.address = address;
     this.phone = phone;
+    this.orders = new ArrayList<>();
   }
 
   public void addOrder(Order order) {
