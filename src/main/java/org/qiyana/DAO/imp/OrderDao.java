@@ -3,6 +3,8 @@ package org.qiyana.DAO.imp;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
 import org.qiyana.model.Order;
@@ -22,7 +24,7 @@ public class OrderDao implements Dao<Order> {
    * @param order the order object who will be added at database.
    */
   @Override
-  public void add(Order order) {
+  public void add(@NonNull Order order) {
     em.getTransaction().begin();
     em.persist(order);
     em.getTransaction().commit();
@@ -35,7 +37,7 @@ public class OrderDao implements Dao<Order> {
    * @return an order object.
    */
   @Override
-  public Order get(Long id) {
+  public Order get(@NonNull Long id) {
     return em.find(Order.class, id);
   }
 
@@ -62,7 +64,7 @@ public class OrderDao implements Dao<Order> {
    * @param order the order who will be updated at database.
    */
   @Override
-  public void update(Order order) {
+  public void update(@NonNull Order order) {
     em.getTransaction().begin();
     em.merge(order);
     em.getTransaction().commit();
@@ -74,7 +76,7 @@ public class OrderDao implements Dao<Order> {
    * @param id the order id who will be deleted at database.
    */
   @Override
-  public void delete(Long id) {
+  public void delete(@NonNull Long id) {
     em.getTransaction().begin();
     Order order = em.find(Order.class, id);
     em.remove(order);

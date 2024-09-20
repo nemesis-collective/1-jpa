@@ -6,6 +6,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
 import org.qiyana.model.Customer;
@@ -25,7 +27,7 @@ public class CustomerDao implements Dao<Customer> {
    * @param customer the customer object who will be added at database.
    */
   @Override
-  public void add(Customer customer) {
+  public void add(@NonNull Customer customer) {
     em.getTransaction().begin();
     em.persist(customer);
     em.getTransaction().commit();
@@ -38,7 +40,7 @@ public class CustomerDao implements Dao<Customer> {
    * @return a customer object.
    */
   @Override
-  public Customer get(Long id) {
+  public Customer get(@NonNull Long id) {
     return em.find(Customer.class, id);
   }
 
@@ -65,7 +67,7 @@ public class CustomerDao implements Dao<Customer> {
    * @param customer the customer who will be updated at database.
    */
   @Override
-  public void update(Customer customer) {
+  public void update(@NonNull Customer customer) {
     em.getTransaction().begin();
     em.merge(customer);
     em.getTransaction().commit();
@@ -77,7 +79,7 @@ public class CustomerDao implements Dao<Customer> {
    * @param id the customer id who will be deleted at database.
    */
   @Override
-  public void delete(Long id) {
+  public void delete(@NonNull Long id) {
     em.getTransaction().begin();
     Customer customer = em.find(Customer.class, id);
     em.remove(customer);
