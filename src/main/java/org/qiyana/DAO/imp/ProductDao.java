@@ -1,4 +1,4 @@
-package org.example.DAO.imp;
+package org.qiyana.DAO.imp;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -8,8 +8,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
-import org.example.DAO.Dao;
-import org.example.model.Product;
+import org.qiyana.DAO.Dao;
+import org.qiyana.model.Product;
 
 /** Class responsible for database operations at product entity. */
 @Slf4j

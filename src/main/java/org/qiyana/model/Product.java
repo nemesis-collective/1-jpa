@@ -1,4 +1,4 @@
-package org.example.model;
+package org.qiyana.model;
 
 import javax.persistence.*;
 import lombok.Getter;

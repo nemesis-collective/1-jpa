@@ -1,11 +1,11 @@
-package org.example.DAO.imp;
+package org.qiyana.DAO.imp;
 
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
-import org.example.DAO.Dao;
-import org.example.model.Order;
+import org.qiyana.DAO.Dao;
+import org.qiyana.model.Order;
 
 /** Class responsible for database operations at order entity. */
 @Slf4j

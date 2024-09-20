@@ -1,4 +1,4 @@
-package com.example;
+package com.qiyana;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,9 +15,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
-import org.example.DAO.imp.CustomerDao;
-import org.example.model.Customer;
 import org.junit.jupiter.api.*;
+import org.qiyana.DAO.imp.CustomerDao;
+import org.qiyana.model.Customer;
 
 public class CustomerDaoTest {
   private static final String LOG_PATH = "logs/app.log";

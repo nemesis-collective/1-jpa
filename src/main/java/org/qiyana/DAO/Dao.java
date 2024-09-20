@@ -1,4 +1,4 @@
-package org.example.DAO;
+package org.qiyana.DAO;
 
 import java.util.List;
 
