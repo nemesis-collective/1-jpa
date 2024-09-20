@@ -3,7 +3,6 @@ package org.example.DAO.imp;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
@@ -30,14 +29,9 @@ public class ProductDao implements Dao<Product> {
    */
   @Override
   public void add(Product product) {
-    try {
-      em.getTransaction().begin();
-      em.persist(product);
-    } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to add product.");
-    } finally {
-      em.getTransaction().commit();
-    }
+    em.getTransaction().begin();
+    em.persist(product);
+    em.getTransaction().commit();
   }
 
   /**
@@ -48,16 +42,7 @@ public class ProductDao implements Dao<Product> {
    */
   @Override
   public Product get(Long id) {
-    Product product = null;
-    try {
-      product = em.find(Product.class, id);
-      if (product == null) {
-        throw new IllegalArgumentException();
-      }
-    } catch (IllegalArgumentException e) {
-      log.error("Unable to get product.");
-    }
-    return product;
+    return em.find(Product.class, id);
   }
 
   /**
@@ -67,20 +52,13 @@ public class ProductDao implements Dao<Product> {
    */
   @Override
   public List<Product> getAll() {
-    List<Product> list = List.of();
-    try {
-      CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+    CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 
-      Root<Product> root = cq.from(Product.class);
+    Root<Product> root = cq.from(Product.class);
 
-      cq.select(root);
+    cq.select(root);
 
-      list = em.createQuery(cq).getResultList();
-    } catch (Exception e) {
-      log.error("Unable to get all products.");
-    }
-
-    return list;
+    return em.createQuery(cq).getResultList();
   }
 
   /**
@@ -90,28 +68,19 @@ public class ProductDao implements Dao<Product> {
    */
   @Override
   public void update(Product product) {
-    try {
-      em.getTransaction().begin();
-      Product product1 = em.find(Product.class, product.getId());
-      if (product1 == null) {
-        throw new IllegalArgumentException();
-      }
-      CriteriaUpdate<Product> update = cb.createCriteriaUpdate(Product.class);
-      Root<Product> root = update.from(Product.class);
+    em.getTransaction().begin();
+    CriteriaUpdate<Product> update = cb.createCriteriaUpdate(Product.class);
+    Root<Product> root = update.from(Product.class);
 
-      update.set(root.get("name"), product.getName());
-      update.set(root.get("description"), product.getDescription());
-      update.set(root.get("price"), product.getPrice());
-      update.set(root.get("currency"), product.getCurrency());
+    update.set(root.get("name"), product.getName());
+    update.set(root.get("description"), product.getDescription());
+    update.set(root.get("price"), product.getPrice());
+    update.set(root.get("currency"), product.getCurrency());
 
-      update.where(cb.equal(root.get("id"), product.getId()));
+    update.where(cb.equal(root.get("id"), product.getId()));
 
-      em.createQuery(update).executeUpdate();
-    } catch (Exception e) {
-      log.error("Unable to update product.");
-    } finally {
-      em.getTransaction().commit();
-    }
+    em.createQuery(update).executeUpdate();
+    em.getTransaction().commit();
   }
 
   /**
@@ -121,14 +90,9 @@ public class ProductDao implements Dao<Product> {
    */
   @Override
   public void delete(Long id) {
-    try {
-      em.getTransaction().begin();
-      Product product = em.find(Product.class, id);
-      em.remove(product);
-    } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to delete product.");
-    } finally {
-      em.getTransaction().commit();
-    }
+    em.getTransaction().begin();
+    Product product = em.find(Product.class, id);
+    em.remove(product);
+    em.getTransaction().commit();
   }
 }

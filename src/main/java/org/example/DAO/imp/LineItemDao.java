@@ -3,7 +3,6 @@ package org.example.DAO.imp;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
@@ -30,14 +29,9 @@ public class LineItemDao implements Dao<LineItem> {
    */
   @Override
   public void add(LineItem lineItem) {
-    try {
-      em.getTransaction().begin();
-      em.persist(lineItem);
-    } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to add item to order.");
-    } finally {
-      em.getTransaction().commit();
-    }
+    em.getTransaction().begin();
+    em.persist(lineItem);
+    em.getTransaction().commit();
   }
 
   /**
@@ -48,16 +42,7 @@ public class LineItemDao implements Dao<LineItem> {
    */
   @Override
   public LineItem get(Long id) {
-    LineItem lineItem = null;
-    try {
-      lineItem = em.find(LineItem.class, id);
-      if (lineItem == null) {
-        throw new IllegalArgumentException();
-      }
-    } catch (IllegalArgumentException e) {
-      log.error("Unable to get item.");
-    }
-    return lineItem;
+    return em.find(LineItem.class, id);
   }
 
   /**
@@ -67,20 +52,13 @@ public class LineItemDao implements Dao<LineItem> {
    */
   @Override
   public List<LineItem> getAll() {
-    List<LineItem> list = List.of();
-    try {
-      CriteriaQuery<LineItem> cq = cb.createQuery(LineItem.class);
+    CriteriaQuery<LineItem> cq = cb.createQuery(LineItem.class);
 
-      Root<LineItem> root = cq.from(LineItem.class);
+    Root<LineItem> root = cq.from(LineItem.class);
 
-      cq.select(root);
+    cq.select(root);
 
-      list = em.createQuery(cq).getResultList();
-    } catch (Exception e) {
-      log.error("Unable to get all items.");
-    }
-
-    return list;
+    return em.createQuery(cq).getResultList();
   }
 
   /**
@@ -90,28 +68,20 @@ public class LineItemDao implements Dao<LineItem> {
    */
   @Override
   public void update(LineItem lineItem) {
-    try {
-      em.getTransaction().begin();
-      LineItem lineItem1 = em.find(LineItem.class, lineItem.getId());
-      if (lineItem1 == null) {
-        throw new IllegalArgumentException();
-      }
-      CriteriaBuilder cb = em.getCriteriaBuilder();
-      CriteriaUpdate<LineItem> update = cb.createCriteriaUpdate(LineItem.class);
-      Root<LineItem> root = update.from(LineItem.class);
+    em.getTransaction().begin();
 
-      update.set(root.get("currency"), lineItem1.getCurrency());
-      update.set(root.get("totalPrice"), lineItem1.getTotalPrice());
-      update.set(root.get("quantity"), lineItem1.getQuantity());
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaUpdate<LineItem> update = cb.createCriteriaUpdate(LineItem.class);
+    Root<LineItem> root = update.from(LineItem.class);
 
-      update.where(cb.equal(root.get("id"), lineItem1.getId()));
+    update.set(root.get("currency"), lineItem.getCurrency());
+    update.set(root.get("totalPrice"), lineItem.getTotalPrice());
+    update.set(root.get("quantity"), lineItem.getQuantity());
 
-      em.createQuery(update).executeUpdate();
-    } catch (Exception e) {
-      log.error("Unable to update item.");
-    } finally {
-      em.getTransaction().commit();
-    }
+    update.where(cb.equal(root.get("id"), lineItem.getId()));
+
+    em.createQuery(update).executeUpdate();
+    em.getTransaction().commit();
   }
 
   /**
@@ -121,14 +91,9 @@ public class LineItemDao implements Dao<LineItem> {
    */
   @Override
   public void delete(Long id) {
-    try {
-      em.getTransaction().begin();
-      LineItem lineItem = em.find(LineItem.class, id);
-      em.remove(lineItem);
-    } catch (IllegalArgumentException | TransactionRequiredException e) {
-      log.error("Unable to delete item.");
-    } finally {
-      em.getTransaction().commit();
-    }
+    em.getTransaction().begin();
+    LineItem lineItem = em.find(LineItem.class, id);
+    em.remove(lineItem);
+    em.getTransaction().commit();
   }
 }
