@@ -69,18 +69,7 @@ public class CustomerDao implements Dao<Customer> {
   @Override
   public void update(Customer customer) {
     em.getTransaction().begin();
-
-    CriteriaUpdate<Customer> update = cb.createCriteriaUpdate(Customer.class);
-    Root<Customer> root = update.from(Customer.class);
-
-    update.set(root.get("name"), customer.getName());
-    update.set(root.get("email"), customer.getEmail());
-    update.set(root.get("address"), customer.getAddress());
-    update.set(root.get("phone"), customer.getPhone());
-
-    update.where(cb.equal(root.get("id"), customer.getId()));
-
-    em.createQuery(update).executeUpdate();
+    em.merge(customer);
     em.getTransaction().commit();
   }
 

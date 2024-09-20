@@ -65,15 +65,7 @@ public class OrderDao implements Dao<Order> {
   @Override
   public void update(Order order) {
     em.getTransaction().begin();
-    CriteriaUpdate<Order> update = cb.createCriteriaUpdate(Order.class);
-    Root<Order> root = update.from(Order.class);
-
-    update.set(root.get("paymentMethod"), order.getPaymentMethod());
-    update.set(root.get("status"), order.getStatus());
-
-    update.where(cb.equal(root.get("id"), order.getId()));
-
-    em.createQuery(update).executeUpdate();
+    em.merge(order);
     em.getTransaction().commit();
   }
 
