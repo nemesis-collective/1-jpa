@@ -1,4 +1,4 @@
-package com.example;
+package com.qiyana;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -13,14 +13,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
-import org.example.DAO.imp.CustomerDao;
-import org.example.DAO.imp.OrderDao;
-import org.example.DAO.imp.ProductDao;
-import org.example.model.Customer;
-import org.example.model.LineItem;
-import org.example.model.Order;
-import org.example.model.Product;
 import org.junit.jupiter.api.*;
+import org.qiyana.DAO.imp.CustomerDao;
+import org.qiyana.DAO.imp.OrderDao;
+import org.qiyana.DAO.imp.ProductDao;
+import org.qiyana.model.Customer;
+import org.qiyana.model.LineItem;
+import org.qiyana.model.Order;
+import org.qiyana.model.Product;
 
 public class OrderDAOTest {
 

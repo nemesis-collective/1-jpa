@@ -1,4 +1,4 @@
-package com.example;
+package com.qiyana;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,16 +15,31 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
-import org.example.DAO.imp.ProductDao;
-import org.example.model.Product;
 import org.junit.jupiter.api.*;
+import org.qiyana.DAO.imp.CustomerDao;
+import org.qiyana.DAO.imp.LineItemDao;
+import org.qiyana.DAO.imp.OrderDao;
+import org.qiyana.DAO.imp.ProductDao;
+import org.qiyana.model.Customer;
+import org.qiyana.model.LineItem;
+import org.qiyana.model.Product;
 
-public class ProductDaoTest {
+public class LineItemDaoTest {
   private static final String LOG_PATH = "logs/app.log";
 
   EntityManagerFactory etf = Persistence.createEntityManagerFactory("persistence");
+  CustomerDao customerDao = new CustomerDao(etf);
+  OrderDao orderDao = new OrderDao(etf);
   ProductDao productDao = new ProductDao(etf);
+  LineItemDao lineItemDao = new LineItemDao(etf);
+  Customer customer =
+      new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
+
+  org.qiyana.model.Order order = new org.qiyana.model.Order(null, customer, "pending", "Pix");
+
   Product product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
+
+  LineItem lineItem = new LineItem(null, 2, 10, "dollars", product, order);
 
   @BeforeEach
   public void tearDown() throws IOException {
@@ -36,12 +51,15 @@ public class ProductDaoTest {
   }
 
   @Test
-  void addTest_whenAddProduct_mustNotThrowException() {
-    assertDoesNotThrow(() -> productDao.add(product));
+  void addTest_whenAddItem_mustNotThrowException() {
+    customerDao.add(customer);
+    productDao.add(product);
+    orderDao.add(order);
+    assertDoesNotThrow(() -> lineItemDao.add(lineItem));
   }
 
   @Test
-  void addOrderTest_whenAddCustomerFails_mustReceiveErrorMessage() {
+  void addTest_whenAddItemFails_mustReceiveErrorMessage() {
     EntityManagerFactory etfMock = mock(EntityManagerFactory.class);
     EntityManager emMock = mock(EntityManager.class);
     EntityTransaction transaction = mock(EntityTransaction.class);
@@ -50,28 +68,31 @@ public class ProductDaoTest {
     when(emMock.getTransaction()).thenReturn(transaction);
     doThrow(new IllegalArgumentException()).when(emMock).persist(any());
 
-    ProductDao productDaoMock1 = new ProductDao(etfMock);
+    LineItemDao lineItemDao1 = new LineItemDao(etfMock);
 
-    assertDoesNotThrow(() -> productDaoMock1.add(product));
+    assertDoesNotThrow(() -> lineItemDao1.add(lineItem));
   }
 
   @Test
-  void getTest_whenProductIdIsValid_mustReturnProduct() {
+  void getTest_whenItemIdIsValid_mustReturnItem() {
+    customerDao.add(customer);
     productDao.add(product);
-    assertNotNull(productDao.get(1L));
+    orderDao.add(order);
+    lineItemDao.add(lineItem);
+    assertNotNull(lineItemDao.get(1L));
   }
 
   @Test
-  void getTest_whenProductIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-    productDao.get(10L);
+  void getTest_whenItemIdIsInvalid_mustNotThrowException() throws IOException {
+    lineItemDao.get(5L);
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);
-    assertTrue(logContent.contains("Unable to get product."));
+    assertTrue(logContent.contains("Unable to get item."));
   }
 
   @Test
-  void getAllTest_mustReturnAllCustomer() {
-    assertDoesNotThrow(() -> productDao.getAll());
+  void getAllTest_mustReturnAllItems() {
+    assertDoesNotThrow(() -> lineItemDao.getAll());
   }
 
   @Test
@@ -86,41 +107,43 @@ public class ProductDaoTest {
     when(emMock.getCriteriaBuilder()).thenReturn(cb);
     when(cb.createQuery()).thenThrow(new IllegalArgumentException());
 
-    ProductDao productDao1 = new ProductDao(etfMock);
-    productDao1.getAll();
+    LineItemDao lineItemDao1 = new LineItemDao(etfMock);
+    lineItemDao1.getAll();
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);
 
-    assertTrue(logContent.contains("Unable to get all products."));
+    assertTrue(logContent.contains("Unable to get all items."));
   }
 
   @Test
-  void updateTest_whenProductIsValid_mustNotThrowException() {
+  void updateTest_whenItemIsValid_mustNotThrowException() {
+    LineItem lineItem1 = new LineItem(1L, 3, 15, "dollars", product, order);
+    assertDoesNotThrow(() -> lineItemDao.update(lineItem1));
+  }
+
+  @Test
+  void updateTest_whenItemIsInvalid_mustReceiveErrorMessage() throws IOException {
+    customerDao.add(customer);
     productDao.add(product);
-    Product product1 = new Product(3L, "Vodka", "1000ml", 10, "real");
-    assertDoesNotThrow(() -> productDao.update(product1));
-  }
-
-  @Test
-  void updateTest_whenProductIsInvalid_mustReceiveErrorMessage() throws IOException {
-    Product product1 = new Product(10L, "Vodka", "500ml", 10, "real");
-    productDao.update(product1);
+    orderDao.add(order);
+    LineItem lineItem1 = new LineItem(5L, 3, 15, "dollars", product, order);
+    lineItemDao.update(lineItem1);
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);
-    assertTrue(logContent.contains("Unable to update product."));
+    assertTrue(logContent.contains("Unable to update item."));
   }
 
   @Test
-  void deleteTest_whenProductIdIsValid_mustNotThrowException() {
-    assertDoesNotThrow(() -> productDao.delete(1L));
+  void deleteTest_whenItemIdIsValid_mustNotThrowException() {
+    assertDoesNotThrow(() -> lineItemDao.delete(1L));
   }
 
   @Test
-  void deleteTest_whenProductIdIsInvalid_mustReceiveErrorMessage() throws IOException {
-    productDao.delete(10L);
+  void deleteTest_whenItemIdIsInvalid_mustReceiveErrorMessage() throws IOException {
+    lineItemDao.delete(5L);
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);
 
-    assertTrue(logContent.contains("Unable to delete product."));
+    assertTrue(logContent.contains("Unable to delete item."));
   }
 }
