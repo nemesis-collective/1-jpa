@@ -22,6 +22,7 @@ import org.qiyana.DAO.imp.OrderDao;
 import org.qiyana.DAO.imp.ProductDao;
 import org.qiyana.model.Customer;
 import org.qiyana.model.LineItem;
+import org.qiyana.model.Order;
 import org.qiyana.model.Product;
 
 public class LineItemDaoTest {
@@ -35,7 +36,8 @@ public class LineItemDaoTest {
   Customer customer =
       new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
 
-  org.qiyana.model.Order order = new org.qiyana.model.Order(null, customer, "pending", "Pix");
+  org.qiyana.model.Order order =
+      new org.qiyana.model.Order(null, customer, Order.Status.PROCESSING, "Pix");
 
   Product product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
 

@@ -49,7 +49,7 @@ public class OrderDAOTest {
     productDao = new ProductDao(etf);
     customer =
         new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
-    order = new Order(null, customer, "pending", "Pix");
+    order = new Order(null, customer, Order.Status.PROCESSING, "Pix");
     product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
     lineItem = new LineItem(null, 2, 10, "dollars", product, order);
   }
@@ -117,13 +117,13 @@ public class OrderDAOTest {
 
   @Test
   void updateTest_whenOrderIsValid_mustNotThrowException() {
-    Order order1 = new Order(1L, customer, "processing", "Credit Card");
+    Order order1 = new Order(1L, customer, Order.Status.DELIVERED, "Credit Card");
     assertDoesNotThrow(() -> orderDao.update(order1));
   }
 
   @Test
   void updateTest_whenOrderIsInvalid_mustReceiveErrorMessage() throws IOException {
-    Order order1 = new Order(10L, customer, "processing", "Ticket");
+    Order order1 = new Order(10L, customer, Order.Status.SHIPPED, "Ticket");
     orderDao.update(order1);
     final List<String> logLines = Files.readAllLines(Paths.get(LOG_PATH));
     final String logContent = String.join("\n", logLines);

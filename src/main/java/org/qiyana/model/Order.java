@@ -19,7 +19,9 @@ public class Order {
   @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
-  private String status;
+  @Enumerated(EnumType.STRING)
+  private Status status;
+
   private String paymentMethod;
 
   @OneToMany(
@@ -29,7 +31,7 @@ public class Order {
       fetch = FetchType.LAZY)
   private List<LineItem> lineItems;
 
-  public Order(Long id, Customer customer, String status, String paymentMethod) {
+  public Order(Long id, Customer customer, Status status, String paymentMethod) {
     this.customer = customer;
     this.id = id;
     this.lineItems = new ArrayList<>();
@@ -39,6 +41,12 @@ public class Order {
 
   public void addLineItem(LineItem item) {
     lineItems.add(item);
+  }
+
+  public enum Status {
+    PROCESSING,
+    SHIPPED,
+    DELIVERED
   }
 
   @Override
