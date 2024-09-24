@@ -15,7 +15,7 @@ public class LineItem {
   private Long id;
 
   private Integer quantity;
-  private double totalPrice;
+  private double totalItemPrice;
   private Currency currency;
 
   @ManyToOne
@@ -44,7 +44,7 @@ public class LineItem {
         + ", quantity="
         + quantity
         + ", totalPrice="
-        + totalPrice
+        + totalItemPrice
         + ", currency='"
         + currency
         + '\''
