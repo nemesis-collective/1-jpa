@@ -63,7 +63,7 @@ public class LineItemDaoTest {
 
   @BeforeEach
   public void setUp() {
-    lineItem = new LineItem(null, 2, 10, "USD", product, order);
+    lineItem = new LineItem(null, 2, "USD", product, order);
     lineItemDao.add(lineItem);
   }
 
@@ -102,7 +102,7 @@ public class LineItemDaoTest {
 
   @Test
   void updateTest_whenItemCorrectlyUpdated_mustNotThrowException() {
-    LineItem updatedLineItem = new LineItem(lineItem.getId(), 3, 15, "BRL", product, order);
+    LineItem updatedLineItem = new LineItem(lineItem.getId(), 3, "BRL", product, order);
     assertDoesNotThrow(() -> lineItemDao.update(updatedLineItem));
   }
 

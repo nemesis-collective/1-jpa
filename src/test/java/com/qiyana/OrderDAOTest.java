@@ -57,7 +57,7 @@ public class OrderDAOTest {
   @BeforeEach
   public void setUp() {
     order = new Order(null, customer, Order.Status.PROCESSING);
-    lineItem = new LineItem(null,2,10,"USD",product,order);
+    lineItem = new LineItem(null,2,"USD",product,order);
     order.addLineItem(lineItem);
     orderDao.add(order);
     System.out.println(order.getTotalOrderPrice());
