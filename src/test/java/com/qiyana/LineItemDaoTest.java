@@ -44,7 +44,7 @@ public class LineItemDaoTest {
 
     customer = new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
     order = new Order(null, customer, Order.Status.PROCESSING, "Pix");
-    product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
+    product = new Product(null, "Hair Spray", "300 ml", 5, "USD");
 
     customerDao = new CustomerDao(etf);
     orderDao = new OrderDao(etf);
@@ -102,8 +102,8 @@ public class LineItemDaoTest {
 
   @Test
   void updateTest_whenItemCorrectlyUpdated_mustNotThrowException() {
-    LineItem lineItem3 = new LineItem(lineItem.getId(), 3, 15, "dollars", product, order);
-    assertDoesNotThrow(() -> lineItemDao.update(lineItem3));
+    LineItem updatedLineItem = new LineItem(lineItem.getId(), 3, 15, "BRL", product, order);
+    assertDoesNotThrow(() -> lineItemDao.update(updatedLineItem));
   }
 
     @Test

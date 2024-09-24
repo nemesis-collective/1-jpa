@@ -36,7 +36,7 @@ public class ProductDaoTest {
 
   @BeforeEach
   public void setUp() {
-    product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
+    product = new Product(null, "Hair Spray", "300 ml", 5, "USD");
     productDao.add(product);
   }
 
@@ -75,7 +75,7 @@ public class ProductDaoTest {
 
   @Test
   void updateTest_whenProductCorrectlyUpdated_mustNotThrowException() {
-    Product updatedProduct = new Product(product.getId(), "Vodka", "1000ml", 10, "real");
+    Product updatedProduct = new Product(product.getId(), "Vodka", "1000ml", 10, "BRL");
     assertDoesNotThrow(() -> productDao.update(updatedProduct));
   }
 

@@ -4,6 +4,8 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Currency;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -14,7 +16,7 @@ public class LineItem {
 
   private Integer quantity;
   private double totalPrice;
-  private String currency;
+  private Currency currency;
 
   @ManyToOne
   @JoinColumn(name = "order_id")
@@ -25,11 +27,11 @@ public class LineItem {
   private Product product;
 
   public LineItem(
-      Long id, Integer quantity, double totalPrice, String currency, Product product, Order order) {
+      Long id, Integer quantity, double totalPrice, String currencyCode, Product product, Order order) {
     this.id = id;
     this.quantity = quantity;
     this.totalPrice = totalPrice;
-    this.currency = currency;
+    this.currency = Currency.getInstance(currencyCode);
     this.product = product;
     this.order = order;
   }
