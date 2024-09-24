@@ -43,7 +43,7 @@ public class LineItemDaoTest {
     emMock = mock(EntityManager.class);
 
     customer = new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
-    order = new Order(null, customer, Order.Status.PROCESSING, "Pix");
+    order = new Order(null, customer, Order.Status.PROCESSING);
     product = new Product(null, "Hair Spray", "300 ml", 5, "USD");
 
     customerDao = new CustomerDao(etf);
@@ -63,7 +63,7 @@ public class LineItemDaoTest {
 
   @BeforeEach
   public void setUp() {
-    lineItem = new LineItem(null, 2, 10, "dollars", product, order);
+    lineItem = new LineItem(null, 2, 10, "USD", product, order);
     lineItemDao.add(lineItem);
   }
 

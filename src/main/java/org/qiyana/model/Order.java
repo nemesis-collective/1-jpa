@@ -22,7 +22,7 @@ public class Order {
   @Enumerated(EnumType.STRING)
   private Status status;
 
-  private String paymentMethod;
+  private double totalOrderPrice;
 
   @OneToMany(
       mappedBy = "order",
@@ -31,16 +31,21 @@ public class Order {
       fetch = FetchType.LAZY)
   private List<LineItem> lineItems;
 
-  public Order(Long id, Customer customer, Status status, String paymentMethod) {
+  public Order(Long id, Customer customer, Status status) {
     this.customer = customer;
     this.id = id;
     this.lineItems = new ArrayList<>();
     this.status = status;
-    this.paymentMethod = paymentMethod;
+    this.totalOrderPrice = calculateTotalPrice();
+  }
+
+  private double calculateTotalPrice() {
+    return lineItems.stream().mapToDouble(LineItem::getTotalPrice).sum();
   }
 
   public void addLineItem(LineItem item) {
     lineItems.add(item);
+    totalOrderPrice = calculateTotalPrice();
   }
 
   public enum Status {
