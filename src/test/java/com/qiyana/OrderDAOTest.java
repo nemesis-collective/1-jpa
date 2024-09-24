@@ -12,6 +12,7 @@ import org.qiyana.DAO.imp.CustomerDao;
 import org.qiyana.DAO.imp.OrderDao;
 import org.qiyana.DAO.imp.ProductDao;
 import org.qiyana.model.Customer;
+import org.qiyana.model.LineItem;
 import org.qiyana.model.Order;
 import org.qiyana.model.Product;
 
@@ -28,18 +29,23 @@ public class OrderDAOTest {
   static Order order;
   static Product product;
   static OrderDao orderDaoMock;
+  static LineItem lineItem;
 
   @BeforeAll
   public static void init() {
     etf = Persistence.createEntityManagerFactory("persistence");
+
     customerDao = new CustomerDao(etf);
     productDao = new ProductDao(etf);
     orderDao = new OrderDao(etf);
+
     customer =
         new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
     customerDao.add(customer);
-    product = new Product(null, "Hair Spray", "300 ml", 5, "dollars");
+
+    product = new Product(null, "Hair Spray", "300 ml", 5, "USD");
     productDao.add(product);
+
     etfMock = mock(EntityManagerFactory.class);
     transaction = mock(EntityTransaction.class);
     emMock = mock(EntityManager.class);
@@ -50,8 +56,11 @@ public class OrderDAOTest {
 
   @BeforeEach
   public void setUp() {
-    order = new Order(null, customer, Order.Status.PROCESSING, "Pix");
+    order = new Order(null, customer, Order.Status.PROCESSING);
+    lineItem = new LineItem(null,2,10,"USD",product,order);
+    order.addLineItem(lineItem);
     orderDao.add(order);
+    System.out.println(order.getTotalOrderPrice());
   }
 
   @Test
@@ -89,7 +98,7 @@ public class OrderDAOTest {
 
   @Test
   void updateTest_whenOrderCorrectlyUpdate_mustNotThrowException() {
-    Order updatedOrder = new Order(order.getId(), customer, Order.Status.DELIVERED, "Credit Card");
+    Order updatedOrder = new Order(order.getId(), customer, Order.Status.DELIVERED);
     assertDoesNotThrow(() -> orderDao.update(updatedOrder));
   }
 
