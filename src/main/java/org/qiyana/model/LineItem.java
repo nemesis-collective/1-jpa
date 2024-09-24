@@ -27,13 +27,17 @@ public class LineItem {
   private Product product;
 
   public LineItem(
-      Long id, Integer quantity, double totalPrice, String currencyCode, Product product, Order order) {
+      Long id, Integer quantity,String currencyCode, Product product, Order order) {
     this.id = id;
     this.quantity = quantity;
-    this.totalPrice = totalPrice;
-    this.currency = Currency.getInstance(currencyCode);
     this.product = product;
+    this.totalItemPrice = calculateTotalItemPrice();
+    this.currency = Currency.getInstance(currencyCode);
     this.order = order;
+  }
+
+  private double calculateTotalItemPrice() {
+    return product.getPrice() * quantity;
   }
 
   @Override

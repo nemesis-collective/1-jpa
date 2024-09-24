@@ -40,7 +40,7 @@ public class Order {
   }
 
   private double calculateTotalPrice() {
-    return lineItems.stream().mapToDouble(LineItem::getTotalPrice).sum();
+    return lineItems.stream().mapToDouble(LineItem::getTotalItemPrice).sum();
   }
 
   public void addLineItem(LineItem item) {
