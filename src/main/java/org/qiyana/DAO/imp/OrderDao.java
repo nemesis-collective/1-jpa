@@ -19,9 +19,9 @@ public class OrderDao implements Dao<Order> {
   }
 
   /**
-   * Uses an entity manager to insert an order into the database.
+   * Uses an entity manager to insert an order in the database.
    *
-   * @param order the order object who will be added at database.
+   * @param order the order object who will be added to the database.
    */
   @Override
   public void add(@NonNull Order order) {
@@ -31,9 +31,9 @@ public class OrderDao implements Dao<Order> {
   }
 
   /**
-   * Uses an entity manager to insert an order into the database.
+   * Uses an entity manager to insert an order in the database.
    *
-   * @param id the order id who will be searched at database.
+   * @param id the order id who will be searched in the database.
    * @return an order object.
    */
   @Override
@@ -42,7 +42,7 @@ public class OrderDao implements Dao<Order> {
   }
 
   /**
-   * Uses an entity manager to search all orders into the database.
+   * Uses an entity manager to search all orders in the database.
    *
    * @return an order list.
    */
@@ -59,9 +59,9 @@ public class OrderDao implements Dao<Order> {
   }
 
   /**
-   * Uses an entity manager to update an order into the database.
+   * Uses an entity manager to update an order in the database.
    *
-   * @param order the order who will be updated at database.
+   * @param order the order who will be updated in the database.
    */
   @Override
   public void update(@NonNull Order order) {
@@ -71,9 +71,9 @@ public class OrderDao implements Dao<Order> {
   }
 
   /**
-   * Uses an entity manager to delete an order into the database.
+   * Uses an entity manager to delete an order in the database.
    *
-   * @param id the order id who will be deleted at database.
+   * @param id the order id who will be deleted in the database.
    */
   @Override
   public void delete(@NonNull Long id) {

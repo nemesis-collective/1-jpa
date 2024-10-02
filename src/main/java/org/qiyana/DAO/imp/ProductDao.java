@@ -6,7 +6,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
@@ -22,9 +21,9 @@ public class ProductDao implements Dao<Product> {
   }
 
   /**
-   * Uses an entity manager to insert a product into the database.
+   * Uses an entity manager to insert a product in the database.
    *
-   * @param product the product object who will be added at database.
+   * @param product the product object who will be added to the database.
    */
   @Override
   public void add(@NonNull Product product) {
@@ -34,9 +33,9 @@ public class ProductDao implements Dao<Product> {
   }
 
   /**
-   * Uses an entity manager to insert a product into the database.
+   * Uses an entity manager to search a product in the database.
    *
-   * @param id the product id who will be searched at database.
+   * @param id the product id who will be searched in the database.
    * @return a product object.
    */
   @Override
@@ -45,7 +44,7 @@ public class ProductDao implements Dao<Product> {
   }
 
   /**
-   * Uses an entity manager to search all products into the database.
+   * Uses an entity manager to search all products in the database.
    *
    * @return a product list.
    */
@@ -62,9 +61,9 @@ public class ProductDao implements Dao<Product> {
   }
 
   /**
-   * Uses an entity manager to update a product into the database.
+   * Uses an entity manager to update a product in the database.
    *
-   * @param product the product who will be updated at database.
+   * @param product the product who will be updated to the database.
    */
   @Override
   public void update(@NonNull Product product) {
@@ -74,9 +73,9 @@ public class ProductDao implements Dao<Product> {
   }
 
   /**
-   * Uses an entity manager to delete a product into the database.
+   * Uses an entity manager to delete a product in the database.
    *
-   * @param id the product id who will be deleted at database.
+   * @param id the product id who will be deleted to the database.
    */
   @Override
   public void delete(@NonNull Long id) {

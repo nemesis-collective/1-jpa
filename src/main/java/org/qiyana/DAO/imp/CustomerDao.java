@@ -6,7 +6,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
@@ -22,9 +21,9 @@ public class CustomerDao implements Dao<Customer> {
   }
 
   /**
-   * Uses an entity manager to insert a customer into the database.
+   * Uses an entity manager to insert a customer in the database.
    *
-   * @param customer the customer object who will be added at database.
+   * @param customer the customer object that will be added to the database.
    */
   @Override
   public void add(@NonNull Customer customer) {
@@ -34,9 +33,9 @@ public class CustomerDao implements Dao<Customer> {
   }
 
   /**
-   * Uses an entity manager to insert a customer into the database.
+   * Uses an entity manager to insert a customer in the database.
    *
-   * @param id the customer id who will be searched at database.
+   * @param id the customer id that will be searched in the database.
    * @return a customer object.
    */
   @Override
@@ -45,7 +44,7 @@ public class CustomerDao implements Dao<Customer> {
   }
 
   /**
-   * Uses an entity manager to search all customers into the database.
+   * Uses an entity manager to search all customers in the database.
    *
    * @return a customer list.
    */
@@ -62,9 +61,9 @@ public class CustomerDao implements Dao<Customer> {
   }
 
   /**
-   * Uses an entity manager to update a customer into the database.
+   * Uses an entity manager to update a customer in the database.
    *
-   * @param customer the customer who will be updated at database.
+   * @param customer the customer that will be updated in the database.
    */
   @Override
   public void update(@NonNull Customer customer) {
@@ -74,9 +73,9 @@ public class CustomerDao implements Dao<Customer> {
   }
 
   /**
-   * Uses an entity manager to delete a customer into the database.
+   * Uses an entity manager to delete a customer in the database.
    *
-   * @param id the customer id who will be deleted at database.
+   * @param id the customer id that will be deleted in the database.
    */
   @Override
   public void delete(@NonNull Long id) {

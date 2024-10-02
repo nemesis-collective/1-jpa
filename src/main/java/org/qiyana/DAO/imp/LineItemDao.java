@@ -6,7 +6,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;
@@ -22,9 +21,9 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   /**
-   * Uses an entity manager to insert a lineItem into the database.
+   * Uses an entity manager to insert a lineItem in the database.
    *
-   * @param lineItem the lineItem object who will be added at database.
+   * @param lineItem the lineItem object that will be added to the database.
    */
   @Override
   public void add(@NonNull LineItem lineItem) {
@@ -34,9 +33,9 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   /**
-   * Uses an entity manager to insert a lineItem into the database.
+   * Uses an entity manager to insert a lineItem in the database.
    *
-   * @param id the lineItem id who will be searched at database.
+   * @param id the lineItem id that will be searched in the database.
    * @return a lineItem object.
    */
   @Override
@@ -45,7 +44,7 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   /**
-   * Uses an entity manager to search all lineItems into the database.
+   * Uses an entity manager to search all lineItems in the database.
    *
    * @return a lineItem list.
    */
@@ -62,9 +61,9 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   /**
-   * Uses an entity manager to update a lineItem into the database.
+   * Uses an entity manager to update a lineItem in the database.
    *
-   * @param lineItem the lineItem who will be updated at database.
+   * @param lineItem the lineItem that will be updated in the database.
    */
   @Override
   public void update(@NonNull LineItem lineItem) {
@@ -74,9 +73,9 @@ public class LineItemDao implements Dao<LineItem> {
   }
 
   /**
-   * Uses an entity manager to delete a lineItem into the database.
+   * Uses an entity manager to delete a lineItem in the database.
    *
-   * @param id the lineItem id who will be deleted at database.
+   * @param id the lineItem id that will be deleted in the database.
    */
   @Override
   public void delete(@NonNull Long id) {
