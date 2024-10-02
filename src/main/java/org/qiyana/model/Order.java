@@ -1,5 +1,6 @@
 package org.qiyana.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class Order {
   @Enumerated(EnumType.STRING)
   private Status status;
 
-  private double totalOrderPrice;
+  private BigDecimal totalOrderPrice;
 
   @OneToMany(
       mappedBy = "order",
@@ -31,16 +32,17 @@ public class Order {
       fetch = FetchType.LAZY)
   private List<LineItem> lineItems;
 
-  public Order(Long id, Customer customer, Status status) {
+  public Order(Customer customer, Status status) {
     this.customer = customer;
-    this.id = id;
     this.lineItems = new ArrayList<>();
     this.status = status;
     this.totalOrderPrice = calculateTotalPrice();
   }
 
-  private double calculateTotalPrice() {
-    return lineItems.stream().mapToDouble(LineItem::getTotalItemPrice).sum();
+  private BigDecimal calculateTotalPrice() {
+    return lineItems.stream()
+            .map(LineItem::getTotalItemPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   public void addLineItem(LineItem item) {

@@ -1,10 +1,10 @@
 package org.qiyana.model;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Currency;
 
 @Entity
 @NoArgsConstructor
@@ -15,7 +15,7 @@ public class LineItem {
   private Long id;
 
   private Integer quantity;
-  private double totalItemPrice;
+  private BigDecimal totalItemPrice;
   private Currency currency;
 
   @ManyToOne
@@ -26,9 +26,7 @@ public class LineItem {
   @JoinColumn(name = "product_id", referencedColumnName = "id")
   private Product product;
 
-  public LineItem(
-      Long id, Integer quantity,String currencyCode, Product product, Order order) {
-    this.id = id;
+  public LineItem(Integer quantity, String currencyCode, Product product, Order order) {
     this.quantity = quantity;
     this.product = product;
     this.totalItemPrice = calculateTotalItemPrice();
@@ -36,8 +34,8 @@ public class LineItem {
     this.order = order;
   }
 
-  private double calculateTotalItemPrice() {
-    return product.getPrice() * quantity;
+  private BigDecimal calculateTotalItemPrice() {
+    return product.getPrice().multiply(BigDecimal.valueOf(quantity));
   }
 
   @Override

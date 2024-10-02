@@ -1,10 +1,10 @@
 package org.qiyana.model;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Currency;
 
 @Entity
 @NoArgsConstructor
@@ -16,14 +16,13 @@ public class Product {
 
   private String name;
   private String description;
-  private double price;
+  private BigDecimal price;
   private Currency currency;
 
-  public Product(Long id, String name, String description, double price, String currencyCode) {
-    this.id = id;
+  public Product(String name, String description, String price, String currencyCode) {
     this.name = name;
     this.description = description;
-    this.price = price;
+    this.price = new BigDecimal(price);
     this.currency = Currency.getInstance(currencyCode);
   }
 
