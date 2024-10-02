@@ -42,9 +42,9 @@ public class LineItemDaoTest {
     transaction = mock(EntityTransaction.class);
     emMock = mock(EntityManager.class);
 
-    customer = new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
-    order = new Order(null, customer, Order.Status.PROCESSING);
-    product = new Product(null, "Hair Spray", "300 ml", 5, "USD");
+    customer = new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
+    order = new Order(customer, Order.Status.PROCESSING);
+    product = new Product("Hair Spray", "300 ml", "5", "USD");
 
     customerDao = new CustomerDao(etf);
     orderDao = new OrderDao(etf);
@@ -63,7 +63,7 @@ public class LineItemDaoTest {
 
   @BeforeEach
   public void setUp() {
-    lineItem = new LineItem(null, 2, "USD", product, order);
+    lineItem = new LineItem(2, "USD", product, order);
     lineItemDao.add(lineItem);
   }
 
@@ -102,7 +102,7 @@ public class LineItemDaoTest {
 
   @Test
   void updateTest_whenItemCorrectlyUpdated_mustNotThrowException() {
-    LineItem updatedLineItem = new LineItem(lineItem.getId(), 3, "BRL", product, order);
+    LineItem updatedLineItem = new LineItem(3, "BRL", product, order);
     assertDoesNotThrow(() -> lineItemDao.update(updatedLineItem));
   }
 
