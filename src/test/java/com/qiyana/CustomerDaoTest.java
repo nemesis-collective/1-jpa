@@ -37,7 +37,7 @@ public class CustomerDaoTest {
   @BeforeEach
   public void setUp() {
     customer =
-        new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
+        new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
     customerDao.add(customer);
   }
 
@@ -77,8 +77,7 @@ public class CustomerDaoTest {
   @Test
   void updateTest_whenCustomerCorrectlyUpdated_mustNotThrowException() {
     Customer customerUpdated =
-        new Customer(
-            customer.getId(), "QiyanaTech1", "teste789@gmail.com", "Rua Ixtal", "1254785336");
+        new Customer("QiyanaTech1", "teste789@gmail.com", "Rua Ixtal", "1254785336");
     assertDoesNotThrow(() -> customerDao.update(customerUpdated));
   }
 

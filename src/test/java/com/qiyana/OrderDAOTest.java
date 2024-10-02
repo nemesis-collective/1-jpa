@@ -40,10 +40,10 @@ public class OrderDAOTest {
     orderDao = new OrderDao(etf);
 
     customer =
-        new Customer(null, "QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
+        new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
     customerDao.add(customer);
 
-    product = new Product(null, "Hair Spray", "300 ml", 5, "USD");
+    product = new Product("Hair Spray", "300 ml", "5", "USD");
     productDao.add(product);
 
     etfMock = mock(EntityManagerFactory.class);
@@ -56,8 +56,8 @@ public class OrderDAOTest {
 
   @BeforeEach
   public void setUp() {
-    order = new Order(null, customer, Order.Status.PROCESSING);
-    lineItem = new LineItem(null,2,"USD",product,order);
+    order = new Order(customer, Order.Status.PROCESSING);
+    lineItem = new LineItem(2,"USD",product,order);
     order.addLineItem(lineItem);
     orderDao.add(order);
     System.out.println(order.getTotalOrderPrice());
@@ -98,7 +98,7 @@ public class OrderDAOTest {
 
   @Test
   void updateTest_whenOrderCorrectlyUpdate_mustNotThrowException() {
-    Order updatedOrder = new Order(order.getId(), customer, Order.Status.DELIVERED);
+    Order updatedOrder = new Order(customer, Order.Status.DELIVERED);
     assertDoesNotThrow(() -> orderDao.update(updatedOrder));
   }
 
