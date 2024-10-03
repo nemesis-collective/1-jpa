@@ -76,9 +76,10 @@ public class CustomerDaoTest {
 
   @Test
   void updateTest_whenCustomerCorrectlyUpdated_mustNotThrowException() {
-    Customer customerUpdated =
-        new Customer("QiyanaTech1", "teste789@gmail.com", "Rua Ixtal", "1254785336");
-    assertDoesNotThrow(() -> customerDao.update(customerUpdated));
+    Customer customerToUpdate = customerDao.get(customer.getId());
+    customerToUpdate.setEmail("teste789@gmail.com");
+    customerDao.update(customerToUpdate);
+    assertEquals("teste789@gmail.com",customerDao.get(customer.getId()).getEmail());
   }
 
   @Test

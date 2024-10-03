@@ -60,7 +60,6 @@ public class OrderDAOTest {
     lineItem = new LineItem(2,"USD",product,order);
     order.addLineItem(lineItem);
     orderDao.add(order);
-    System.out.println(order.getTotalOrderPrice());
   }
 
   @Test
@@ -98,8 +97,10 @@ public class OrderDAOTest {
 
   @Test
   void updateTest_whenOrderCorrectlyUpdate_mustNotThrowException() {
-    Order updatedOrder = new Order(customer, Order.Status.DELIVERED);
-    assertDoesNotThrow(() -> orderDao.update(updatedOrder));
+    Order orderToUpdate = orderDao.get(order.getId());
+    orderToUpdate.setStatus(Order.Status.SHIPPED);
+    orderDao.update(orderToUpdate);
+    assertEquals(Order.Status.SHIPPED,orderDao.get(order.getId()).getStatus());
   }
 
   @Test

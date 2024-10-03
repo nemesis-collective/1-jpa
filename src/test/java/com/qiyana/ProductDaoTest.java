@@ -75,8 +75,10 @@ public class ProductDaoTest {
 
   @Test
   void updateTest_whenProductCorrectlyUpdated_mustNotThrowException() {
-    Product updatedProduct = new Product("Vodka", "1000ml", "10", "BRL");
-    assertDoesNotThrow(() -> productDao.update(updatedProduct));
+    Product productToUpdate = productDao.get(product.getId());
+    productToUpdate.setName("Vodka");
+    productDao.update(productToUpdate);
+    assertEquals("Vodka",productDao.get(product.getId()).getName());
   }
 
   @Test
