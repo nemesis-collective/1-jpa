@@ -4,20 +4,26 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "orders")
 @NoArgsConstructor
 @Getter
+@Setter
 public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Setter(AccessLevel.NONE)
   private Long id;
 
   @ManyToOne
   @JoinColumn(name = "customer_id", nullable = false)
+  @Setter(AccessLevel.NONE)
   private Customer customer;
 
   @Enumerated(EnumType.STRING)
@@ -30,6 +36,7 @@ public class Order {
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       fetch = FetchType.LAZY)
+  @Setter(AccessLevel.NONE)
   private List<LineItem> lineItems;
 
   public Order(Customer customer, Status status) {
