@@ -102,8 +102,10 @@ public class LineItemDaoTest {
 
   @Test
   void updateTest_whenItemCorrectlyUpdated_mustNotThrowException() {
-    LineItem updatedLineItem = new LineItem(3, "BRL", product, order);
-    assertDoesNotThrow(() -> lineItemDao.update(updatedLineItem));
+    LineItem lineItemToUpdate = lineItemDao.get(lineItem.getId());
+    lineItemToUpdate.setQuantity(4);
+    lineItemDao.update(lineItemToUpdate);
+    assertEquals(4,lineItemDao.get(lineItem.getId()).getQuantity());
   }
 
     @Test
