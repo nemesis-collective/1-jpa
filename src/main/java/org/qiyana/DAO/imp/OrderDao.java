@@ -3,7 +3,6 @@ package org.qiyana.DAO.imp;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.qiyana.DAO.Dao;

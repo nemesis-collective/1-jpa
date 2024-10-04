@@ -72,22 +72,22 @@ public class LineItemDaoTest {
     assertDoesNotThrow(() -> lineItemDao.add(lineItem));
   }
 
-    @Test
-    void addTest_mustThrowException() {
-      doThrow(new IllegalArgumentException()).when(emMock).persist(any());
-      assertThrows(IllegalArgumentException.class,() -> lineItemDaoMock.add(lineItem));
-    }
+  @Test
+  void addTest_mustThrowException() {
+    doThrow(new IllegalArgumentException()).when(emMock).persist(any());
+    assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.add(lineItem));
+  }
 
   @Test
   void getTest_mustReturnItem() {
     assertNotNull(lineItemDao.get(lineItem.getId()));
   }
 
-    @Test
-    void getTest_mustThrowException(){
-      doThrow(new IllegalArgumentException()).when(emMock).find(any(), any());
-      assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.get(lineItem.getId()));
-    }
+  @Test
+  void getTest_mustThrowException() {
+    doThrow(new IllegalArgumentException()).when(emMock).find(any(), any());
+    assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.get(lineItem.getId()));
+  }
 
   @Test
   void getAllTest_mustReturnAllItems() {
@@ -95,33 +95,33 @@ public class LineItemDaoTest {
   }
 
   @Test
-    void getAllTest_mustThrowException() {
-      when(emMock.getCriteriaBuilder()).thenThrow(new IllegalArgumentException());
-      assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.getAll());
-    }
+  void getAllTest_mustThrowException() {
+    when(emMock.getCriteriaBuilder()).thenThrow(new IllegalArgumentException());
+    assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.getAll());
+  }
 
   @Test
   void updateTest_whenItemCorrectlyUpdated_mustNotThrowException() {
     LineItem lineItemToUpdate = lineItemDao.get(lineItem.getId());
     lineItemToUpdate.setQuantity(4);
     lineItemDao.update(lineItemToUpdate);
-    assertEquals(4,lineItemDao.get(lineItem.getId()).getQuantity());
+    assertEquals(4, lineItemDao.get(lineItem.getId()).getQuantity());
   }
 
-    @Test
-    void updateTest_mustThrowException(){
-      when(emMock.merge(any())).thenThrow(new IllegalArgumentException());
-      assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.update(lineItem));
-    }
+  @Test
+  void updateTest_mustThrowException() {
+    when(emMock.merge(any())).thenThrow(new IllegalArgumentException());
+    assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.update(lineItem));
+  }
 
   @Test
   void deleteTest_whenItemCorrectlyDeleted_mustNotThrowException() {
     assertDoesNotThrow(() -> lineItemDao.delete(lineItem.getId()));
   }
 
-    @Test
-    void deleteTest_whenItemIdIsInvalid_mustReceiveErrorMessage(){
-      doThrow(new IllegalArgumentException()).when(emMock).remove(any());
-      assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.delete(lineItem.getId()));
-    }
+  @Test
+  void deleteTest_whenItemIdIsInvalid_mustReceiveErrorMessage() {
+    doThrow(new IllegalArgumentException()).when(emMock).remove(any());
+    assertThrows(IllegalArgumentException.class, () -> lineItemDaoMock.delete(lineItem.getId()));
+  }
 }
