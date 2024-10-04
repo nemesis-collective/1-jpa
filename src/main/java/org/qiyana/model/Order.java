@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,8 +47,8 @@ public class Order {
 
   private BigDecimal calculateTotalPrice() {
     return lineItems.stream()
-            .map(LineItem::getTotalItemPrice)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        .map(LineItem::getTotalItemPrice)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   public void addLineItem(LineItem item) {

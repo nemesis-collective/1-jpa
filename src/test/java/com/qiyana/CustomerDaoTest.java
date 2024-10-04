@@ -36,8 +36,7 @@ public class CustomerDaoTest {
 
   @BeforeEach
   public void setUp() {
-    customer =
-        new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
+    customer = new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
     customerDao.add(customer);
   }
 
@@ -79,7 +78,7 @@ public class CustomerDaoTest {
     Customer customerToUpdate = customerDao.get(customer.getId());
     customerToUpdate.setEmail("teste789@gmail.com");
     customerDao.update(customerToUpdate);
-    assertEquals("teste789@gmail.com",customerDao.get(customer.getId()).getEmail());
+    assertEquals("teste789@gmail.com", customerDao.get(customer.getId()).getEmail());
   }
 
   @Test

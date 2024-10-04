@@ -78,7 +78,7 @@ public class ProductDaoTest {
     Product productToUpdate = productDao.get(product.getId());
     productToUpdate.setName("Vodka");
     productDao.update(productToUpdate);
-    assertEquals("Vodka",productDao.get(product.getId()).getName());
+    assertEquals("Vodka", productDao.get(product.getId()).getName());
   }
 
   @Test

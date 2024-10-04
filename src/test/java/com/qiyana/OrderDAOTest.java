@@ -39,8 +39,7 @@ public class OrderDAOTest {
     productDao = new ProductDao(etf);
     orderDao = new OrderDao(etf);
 
-    customer =
-        new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
+    customer = new Customer("QiyanaTech", "test@gmail.com", "Rua Tiberius Dourado", "123456789");
     customerDao.add(customer);
 
     product = new Product("Hair Spray", "300 ml", "5", "USD");
@@ -57,7 +56,7 @@ public class OrderDAOTest {
   @BeforeEach
   public void setUp() {
     order = new Order(customer, Order.Status.PROCESSING);
-    lineItem = new LineItem(2,"USD",product,order);
+    lineItem = new LineItem(2, "USD", product, order);
     order.addLineItem(lineItem);
     orderDao.add(order);
   }
@@ -100,7 +99,7 @@ public class OrderDAOTest {
     Order orderToUpdate = orderDao.get(order.getId());
     orderToUpdate.setStatus(Order.Status.SHIPPED);
     orderDao.update(orderToUpdate);
-    assertEquals(Order.Status.SHIPPED,orderDao.get(order.getId()).getStatus());
+    assertEquals(Order.Status.SHIPPED, orderDao.get(order.getId()).getStatus());
   }
 
   @Test
