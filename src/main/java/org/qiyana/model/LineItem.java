@@ -24,11 +24,13 @@ public class LineItem {
 
   @ManyToOne
   @JoinColumn(name = "order_id")
+  @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private Order order;
 
   @OneToOne
   @JoinColumn(name = "product_id", referencedColumnName = "id")
+  @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private Product product;
 
