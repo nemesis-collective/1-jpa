@@ -24,6 +24,8 @@ public class Customer {
   private String phone;
 
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
   private List<Order> orders;
 
   public Customer(String name, String email, String address, String phone) {

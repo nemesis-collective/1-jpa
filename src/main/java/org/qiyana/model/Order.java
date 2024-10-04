@@ -22,6 +22,7 @@ public class Order {
 
   @ManyToOne
   @JoinColumn(name = "customer_id", nullable = false)
+  @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private Customer customer;
 
@@ -33,8 +34,8 @@ public class Order {
   @OneToMany(
       mappedBy = "order",
       cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.LAZY)
+      orphanRemoval = true)
+  @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private List<LineItem> lineItems;
 
