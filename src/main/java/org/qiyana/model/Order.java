@@ -31,10 +31,7 @@ public class Order {
 
   private BigDecimal totalOrderPrice;
 
-  @OneToMany(
-      mappedBy = "order",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private List<LineItem> lineItems;
